@@ -4,11 +4,6 @@ on:
   pull_request:
     paths:
       - 'terraform/modules/**'
-#      - '!terraform/modules/cais/**'
-#      - '!terraform/modules/images/**'
-#      - 'terraform/stacks/dev/europe-north1/nexum/**'
-#      - 'terraform/stacks/uat/europe-north1/nexum/**'
-#      - 'terraform/stacks/prod/europe-north1/nexum/**'
   workflow_dispatch:
 
 
