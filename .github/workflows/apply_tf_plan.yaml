@@ -1,0 +1,30 @@
+name: Terraform plan
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/modules/**'
+#      - '!terraform/modules/cais/**'
+#      - '!terraform/modules/images/**'
+#      - 'terraform/stacks/dev/europe-north1/nexum/**'
+#      - 'terraform/stacks/uat/europe-north1/nexum/**'
+#      - 'terraform/stacks/prod/europe-north1/nexum/**'
+  workflow_dispatch:
+
+
+jobs:
+  generate-plan:
+    runs-on: ubuntu-latest
+    environment: terraform-plan
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Authenticate with GCP
+        id: authenticate_with_gcp
+        uses: google-github-actions/auth@v0.8.1
+        with:
+          service_account: 'service-terraform@stock-market-research-410417.iam.gserviceaccount.com'
+          workload_identity_provider: ''
+
