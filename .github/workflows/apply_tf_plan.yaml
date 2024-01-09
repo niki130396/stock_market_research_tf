@@ -48,6 +48,7 @@ jobs:
         id: terraform_validate
         run: |
           cd terraform/modules/stock_market_research
+          terraform init
           terraform validate
 
       - name: Terraform plan and copy to GCS
