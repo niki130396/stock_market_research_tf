@@ -56,8 +56,6 @@ jobs:
         run: |
           cd terraform/modules/stock_market_research
           terraform plan -out=/tmp/tf.plan -no-color
-          gsutil cp /tmp/tf.plan gs://stock-market-research-tf-state-stock-market-research/terraform/europe-north1/stock_market_research/terraform.tfstate/tf.plan
-          echo "Terraform plan copied to gs://stock-market-research-tf-state-stock-market-research/terraform/europe-north1/stock_market_research/terraform.tfstate/tf.plan"
 
       - name: Comment PR
         id: comment_pr
@@ -124,12 +122,5 @@ jobs:
       - name: Terraform apply
         id: terraform_apply
         run: |
-          gsutil cp gs://stock-market-research-tf-state-stock-market-research/terraform/europe-north1/stock_market_research/terraform.tfstate/tf.plan /tmp/tf.plan
-          cd terraform/modules/stock_market_research
           terraform init
-          terraform apply -input=false /tmp/tf.plan -no-color
-
-      - name: Remove applied plan from GCS
-        id: remove_applied_plan
-        run: |
-          gsutil rm gs://stock-market-research-tf-state-stock-market-research/terraform/europe-north1/stock_market_research/terraform.tfstate/tf.plan
+          terraform apply
