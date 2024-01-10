@@ -126,6 +126,7 @@ jobs:
         run: |
           gsutil cp gs://stock-market-research-tf-state-stock-market-research/terraform/europe-north1/stock_market_research/terraform.tfstate/tf.plan /tmp/tf.plan
           cd terraform/modules/stock_market_research
+          terraform init
           terraform apply -input=false /tmp/tf.plan -no-color
 
       - name: Remove applied plan from GCS
