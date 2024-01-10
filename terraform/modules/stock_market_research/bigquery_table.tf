@@ -55,12 +55,6 @@ resource "google_bigquery_table" "company_meta_data" {
     "type": "STRING",
     "mode": "NULLABLE",
     "description": "Market industry in which the company operates"
-  },
-  {
-    "name": "industry",
-    "type": "STRING",
-    "mode": "NULLABLE",
-    "description": "Market industry in which the company operates"
   }
 ]
 EOF
