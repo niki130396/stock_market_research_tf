@@ -3,7 +3,7 @@ name: Terraform plan
 on:
   pull_request:
     paths:
-      - 'terraform/modules/**'
+      - 'terraform/modules/stock_market_research'
   workflow_dispatch:
 
 permissions:
