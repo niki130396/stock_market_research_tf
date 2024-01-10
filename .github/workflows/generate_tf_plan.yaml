@@ -91,7 +91,7 @@ jobs:
   apply-plan:
     runs-on: ubuntu-latest
     environment: terraform-apply
-    needs: [terraform-plan]
+    needs: [generate-plan]
     steps:
       - name: Checkout
         id: checkout
