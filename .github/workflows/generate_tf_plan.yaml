@@ -55,38 +55,7 @@ jobs:
         id: terraform_plan_and_copy_to_gcs
         run: |
           cd terraform/modules/stock_market_research
-          terraform plan -out=/tmp/tf.plan -no-color
-          gsutil cp /tmp/tf.plan gs://stock-market-research-tf-state-stock-market-research/terraform/europe-north1/stock_market_research/terraform.tfstate/tf.plan
-          echo "Terraform plan copied to gs://stock-market-research-tf-state-stock-market-research/terraform/europe-north1/stock_market_research/terraform.tfstate/tf.plan"
-
-      - name: Comment PR
-        id: comment_pr
-        uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "${{ steps.terraform_plan_and_copy_to_gcs.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Terraform Plan 📖\`${{ steps.terra_plan.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.terra_validate.outcome }}\`
-
-            <details><summary>Show Plan (${{ inputs.env_name }})</summary>
-
-            \`\`\`terraform\n
-            ${process.env.PLAN}
-            \`\`\`
-
-            </details>
-
-            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+          terraform plan
 
   apply-plan:
     runs-on: ubuntu-latest
@@ -124,7 +93,6 @@ jobs:
       - name: Terraform apply
         id: terraform_apply
         run: |
-          gsutil cp gs://stock-market-research-tf-state-stock-market-research/terraform/europe-north1/stock_market_research/terraform.tfstate/tf.plan /tmp/tf.plan
           cd terraform/modules/stock_market_research
           terraform init
-          terraform apply -input=false /tmp/tf.plan -no-color
+          terraform apply
