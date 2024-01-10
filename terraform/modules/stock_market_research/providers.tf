@@ -8,7 +8,7 @@ terraform {
   required_version = ">= 1.3.7"
 
   backend "gcs" {
-    bucket = var.gcs_terraform_bucket
+    bucket = "stock-market-research-tf-state-stock-market-research"
     prefix = "terraform/europe-north1/stock_market_research/terraform.tfstate"
   }
 }
