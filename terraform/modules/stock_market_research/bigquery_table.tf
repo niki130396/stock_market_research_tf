@@ -59,3 +59,5 @@ resource "google_bigquery_table" "company_meta_data" {
 ]
 EOF
 }
+
+
