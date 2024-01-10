@@ -15,4 +15,9 @@ resource "google_bigquery_dataset" "stock_market_research_dataset" {
     role          = "OWNER"
     user_by_email = "service-terraform@stock-market-research-410417.iam.gserviceaccount.com"
   }
+
+  access {
+    role          = "OWNER"
+    user_by_email = "niki130396@gmail.com"
+  }
 }
