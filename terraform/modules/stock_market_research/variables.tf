@@ -8,3 +8,7 @@ variable "gcp_region" {
   type = string
   default = "europe-north1"
 }
+
+variable "stock_market_research_db_user_password" {
+  type = string
+}

@@ -15,3 +15,10 @@ resource "google_sql_database_instance" "stock_market_research_db" {
     }
   }
 }
+
+
+resource "google_sql_user" "stock_market_research_db_user" {
+  instance = google_sql_database_instance.stock_market_research_db.name
+  name     = "stock_market_research_db_user"
+  password = var.stock_market_research_db_user_password
+}
