@@ -1,0 +1,55 @@
+name: Lint and publish image
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'docker/**'
+      - 'requirements.txt'
+    secrets:
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      TERRAFORM_SERVICE_ACCOUNT:
+        required: true
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'docker/**'
+      - 'requirements.txt'
+    secrets:
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      TERRAFORM_SERVICE_ACCOUNT:
+        required: true
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+  pull-requests: write
+
+
+jobs:
+  lint-dockerfile:
+    uses: ./.github/workflows/reusable_lint_dockerfile_workflow.yaml
+    with:
+      context: .
+      file: docker/stock_market_research/Dockerfile
+      image_name: stock_market_research
+      environment: terraform-plan
+    secrets:
+      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
+      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+
+  publish-image:
+    uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
+    needs: lint-dockerfile
+    with:
+      context: .
+      file: docker/stock_market_research/Dockerfile
+      image_name: stock_market_research
+      environment: terraform-apply
+    secrets:
+      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
+      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'

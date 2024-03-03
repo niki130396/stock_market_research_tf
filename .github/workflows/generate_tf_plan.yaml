@@ -7,6 +7,10 @@ on:
     secrets:
       STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
         required: true
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      TERRAFORM_SERVICE_ACCOUNT:
+        required: true
   push:
     branches:
       - main
@@ -14,6 +18,10 @@ on:
       - 'terraform/modules/stock_market_research/**'
     secrets:
       STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
+        required: true
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      TERRAFORM_SERVICE_ACCOUNT:
         required: true
 
 permissions:
@@ -34,8 +42,8 @@ jobs:
         id: authenticate_with_gcp
         uses: google-github-actions/auth@v0.8.1
         with:
-          service_account: 'service-terraform@stock-market-research-410417.iam.gserviceaccount.com'
-          workload_identity_provider: 'projects/824941781846/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider'
+          service_account: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
 
       - name: Set up GCP SDK
         id: set_up_gcp_sdk
@@ -85,8 +93,8 @@ jobs:
         id: authenticate_with_gcp
         uses: google-github-actions/auth@v0.8.1
         with:
-          service_account: 'service-terraform@stock-market-research-410417.iam.gserviceaccount.com'
-          workload_identity_provider: 'projects/824941781846/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider'
+          service_account: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
 
       - name: Set up GCP SDK
         id: set_up_gcp_sdk
