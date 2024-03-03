@@ -7,7 +7,14 @@ on:
     secrets:
       STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
         required: true
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/modules/stock_market_research/**'
+    secrets:
+      STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
+        required: true
 
 permissions:
   id-token: write # This is required for requesting the JWT

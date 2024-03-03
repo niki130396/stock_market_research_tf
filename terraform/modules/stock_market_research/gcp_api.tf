@@ -1,6 +1,7 @@
 locals {
   enabled_apis = [
     "sqladmin.googleapis.com",
+    "artifactregistry.googleapis.com",
   ]
 }
 
