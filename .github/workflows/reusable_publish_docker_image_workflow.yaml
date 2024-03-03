@@ -3,12 +3,6 @@ name: Build image workflow
 on:
   workflow_call:
     inputs:
-      workload_identity_provider:
-        required: true
-        type: string
-      service_account:
-        required: true
-        type: string
       context:
         required: true
         type: string
@@ -32,6 +26,10 @@ on:
             docker_secrets: |
               "SECRET_ONE=VALUE_ONE"
               "SECRET_TWO=VALUE_TWO"
+      workload_identity_provider:
+        required: true
+      service_account:
+        required: true
     outputs:
       image_tag:
         value: ${{ jobs.docker-release.outputs.image_tag }}

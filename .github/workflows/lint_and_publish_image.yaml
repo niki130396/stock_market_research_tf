@@ -34,20 +34,22 @@ jobs:
   lint-dockerfile:
     uses: ./.github/workflows/reusable_lint_dockerfile_workflow.yaml
     with:
-      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
-      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
       context: .
       file: docker/stock_market_research/Dockerfile
       image_name: stock_market_research
       environment: terraform-plan
+    secrets:
+      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
+      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
 
   publish-image:
     uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
     needs: lint-dockerfile
     with:
-      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
-      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
       context: .
       file: docker/stock_market_research/Dockerfile
       image_name: stock_market_research
       environment: terraform-apply
+    secrets:
+      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
+      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
