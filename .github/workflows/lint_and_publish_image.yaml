@@ -29,12 +29,15 @@ jobs:
       context: .
       file: docker/stock_market_research/Dockerfile
       image_name: stock_market_research
+      environment: terraform-plan
 
   publish-image:
     uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
+    needs: lint-dockerfile
     with:
       service_account: 'service-terraform@stock-market-research-410417.iam.gserviceaccount.com'
       workload_identity_provider: 'projects/824941781846/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider'
       context: .
       file: docker/stock_market_research/Dockerfile
       image_name: stock_market_research
+      environment: terraform-apply
