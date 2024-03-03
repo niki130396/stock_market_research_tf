@@ -6,6 +6,11 @@ on:
       - 'src/**'
       - 'docker/**'
       - 'requirements.txt'
+    secrets:
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      TERRAFORM_SERVICE_ACCOUNT:
+        required: true
   push:
     branches:
       - main
@@ -13,6 +18,11 @@ on:
       - 'src/**'
       - 'docker/**'
       - 'requirements.txt'
+    secrets:
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      TERRAFORM_SERVICE_ACCOUNT:
+        required: true
 
 permissions:
   contents: 'read'
@@ -24,8 +34,8 @@ jobs:
   lint-dockerfile:
     uses: ./.github/workflows/reusable_lint_dockerfile_workflow.yaml
     with:
-      service_account: 'service-terraform@stock-market-research-410417.iam.gserviceaccount.com'
-      workload_identity_provider: 'projects/824941781846/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider'
+      service_account: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
+      workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
       context: .
       file: docker/stock_market_research/Dockerfile
       image_name: stock_market_research
@@ -35,8 +45,8 @@ jobs:
     uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
     needs: lint-dockerfile
     with:
-      service_account: 'service-terraform@stock-market-research-410417.iam.gserviceaccount.com'
-      workload_identity_provider: 'projects/824941781846/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider'
+      service_account: ${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}
+      workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
       context: .
       file: docker/stock_market_research/Dockerfile
       image_name: stock_market_research
