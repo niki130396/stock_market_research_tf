@@ -1,0 +1,106 @@
+name: Build image workflow
+
+on:
+  workflow_call:
+    inputs:
+      workload_identity_provider:
+        required: true
+        type: string
+      service_account:
+        required: true
+        type: string
+      context:
+        required: true
+        type: string
+        description: In short the directory where the Dockerfile resides
+      file:
+        required: true
+        type: string
+        description: The name of the file we want to create an image from e.g. Dockerfile
+      image_name:
+        required: true
+        type: string
+      environment:
+        required: false
+        type: string
+    secrets:
+      docker_secrets:
+        required: false
+        description: |
+          This is how you should populate this attribute when calling the workflow: 
+          secrets:
+            docker_secrets: |
+              "SECRET_ONE=VALUE_ONE"
+              "SECRET_TWO=VALUE_TWO"
+    outputs:
+      image_tag:
+        value: ${{ jobs.docker-release.outputs.image_tag }}
+
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+
+jobs:
+  docker-release:
+    name: Tagged Docker release to GCP Artifact Registry
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+
+    steps:
+      - id: checkout
+        uses: actions/checkout@v4
+
+      - name: Extract branch name
+        id: extract_branch
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+
+      - id: authenticate_with_gcp
+        uses: google-github-actions/auth@v0.8.1
+        with:
+          token_format: access_token
+          workload_identity_provider: ${{ inputs.workload_identity_provider }}
+          service_account: ${{ inputs.service_account }}
+          access_token_lifetime: 1800s
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: europe-north1-docker.pkg.dev/images-372112/docker/${{ inputs.image_name }}
+          tags: |
+            type=raw,value=${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
+
+      - id: login_to_artifact_registry
+        uses: docker/login-action@v1
+        with:
+          registry: europe-north1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.authenticate_with_gcp.outputs.access_token }}
+
+      - name: set_up_qemu
+        uses: docker/setup-qemu-action@v3
+
+      - id: setup_buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
+
+      - id: docker_push_tagged
+        name: Tag Docker image and push to Google Artifact Registry
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ inputs.context }}
+          file: ${{ inputs.file }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+          secrets: |
+            ${{ secrets.docker_secrets }}
+          tags: |
+             ${{ steps.meta.outputs.tags }}

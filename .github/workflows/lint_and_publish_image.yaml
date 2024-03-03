@@ -1,0 +1,40 @@
+name: Lint and publish image
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'docker/**'
+      - 'requirements.txt'
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'docker/**'
+      - 'requirements.txt'
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+  pull-requests: write
+
+
+jobs:
+  lint-dockerfile:
+    uses: ./.github/workflows/reusable_lint_dockerfile_workflow.yaml
+    with:
+      service_account: 'service-terraform@stock-market-research-410417.iam.gserviceaccount.com'
+      workload_identity_provider: 'projects/824941781846/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider'
+      context: .
+      file: docker/stock_market_research/Dockerfile
+      image_name: stock_market_research
+
+  publish-image:
+    uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
+    with:
+      service_account: 'service-terraform@stock-market-research-410417.iam.gserviceaccount.com'
+      workload_identity_provider: 'projects/824941781846/locations/global/workloadIdentityPools/terraform-pool/providers/terraform-provider'
+      context: .
+      file: docker/stock_market_research/Dockerfile
+      image_name: stock_market_research
