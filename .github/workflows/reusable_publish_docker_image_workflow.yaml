@@ -70,6 +70,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}
+          flavor: |
+            latest=true
           tags: |
             type=raw,value=${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
 
