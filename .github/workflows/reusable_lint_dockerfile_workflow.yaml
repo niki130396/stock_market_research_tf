@@ -88,6 +88,6 @@ jobs:
           cache-to: type=gha,mode=max
           push: false
           platforms: linux/amd64,linux/arm64
-#          secrets: |
-#            "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}"
-#            "SOME_SECRET=${{ secrets.SOME_SECRET }}"
+          secrets: |
+            "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}"
+            "SOME_SECRET=${{ secrets.SOME_SECRET }}"
