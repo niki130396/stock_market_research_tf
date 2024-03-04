@@ -41,6 +41,8 @@ jobs:
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+      docker_secrets: |
+        "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}"
 
   publish-image:
     uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
@@ -53,6 +55,8 @@ jobs:
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+      docker_secrets: |
+        "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}"
 
   update-cloud-run-job:
     uses: ./.github/workflows/reusable_update_cloud_run_job.yaml

@@ -1,1 +1,3 @@
 SQLAlchemy==2.0.27
+pg8000==1.30.4
+cloud-sql-python-connector==1.6.0
