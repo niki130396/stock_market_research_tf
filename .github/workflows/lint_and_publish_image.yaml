@@ -53,3 +53,15 @@ jobs:
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+
+  update-cloud-run-job:
+    uses: ./.github/workflows/reusable_update_cloud_run_job.yaml
+    needs: publish-image
+    with:
+      image_tag: ${{ needs.publish-image.outputs.image_tag }}
+      job_project_id: stock-market-research-410417
+      job_group_label: stock_market_research
+      environment: terraform-apply
+    secrets:
+      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
+      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
