@@ -14,7 +14,7 @@ resource "google_cloud_run_v2_job" "get_financial_statements" {
   template {
     template {
       containers {
-        image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research:latest"
+        image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research:cloud_run-1.0.16"
       }
       service_account = google_service_account.stock_market_research_user.email
     }
