@@ -104,3 +104,8 @@ jobs:
             ${{ secrets.docker_secrets }}
           tags: |
              ${{ steps.meta.outputs.tags }}
+
+      - id: filter_tags
+        run: |
+          tags="${{ steps.meta.outputs.tags }}"
+          echo $tags
