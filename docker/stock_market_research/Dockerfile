@@ -6,7 +6,7 @@ RUN pip install -r requirements.txt
 
 COPY src src
 
-RUN pip install numpy==1.26.4
+RUN pip install numpy==1.26.3
 
 RUN --mount=type=secret,id=STOCK_MARKET_RESEARCH_DB_USER_PASSWORD \
     mkdir ./some_dir \
