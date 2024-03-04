@@ -6,6 +6,8 @@ RUN pip install -r requirements.txt
 
 COPY src src
 
+RUN pip install numpy
+
 RUN --mount=type=secret,id=STOCK_MARKET_RESEARCH_DB_USER_PASSWORD \
     echo "$(cat /run/secrets/STOCK_MARKET_RESEARCH_DB_USER_PASSWORD)" >> db_password.txt
 
