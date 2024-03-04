@@ -52,6 +52,8 @@ jobs:
       docker_secrets: |
         "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}"
         "SOME_SECRET=${{ secrets.SOME_SECRET }}"
+      SOME_SECRET: '${{ secrets.SOME_SECRET }}'
+      STOCK_MARKET_RESEARCH_DB_USER_PASSWORD: '${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}'
 
   publish-image:
     uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
