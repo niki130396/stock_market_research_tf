@@ -19,4 +19,6 @@ resource "google_cloud_run_v2_job" "get_financial_statements" {
       service_account = google_service_account.stock_market_research_user.email
     }
   }
+
+  depends_on = [google_project_service.enabled_apis, google_artifact_registry_repository_iam_member.docker_writer]
 }
