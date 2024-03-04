@@ -30,6 +30,11 @@ on:
         required: true
       service_account:
         required: true
+      STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
+        required: true
+      SOME_SECRET:
+        required: true
+
 
 permissions:
   contents: 'read'
@@ -84,4 +89,5 @@ jobs:
           push: false
           platforms: linux/amd64,linux/arm64
           secrets: |
-            ${{ secrets.docker_secrets }}
+            "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}"
+            "SOME_SECRET=${{ secrets.SOME_SECRET }}"
