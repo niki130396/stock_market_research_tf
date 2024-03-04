@@ -31,6 +31,7 @@ on:
       service_account:
         required: true
 
+
 permissions:
   contents: 'read'
   id-token: 'write'

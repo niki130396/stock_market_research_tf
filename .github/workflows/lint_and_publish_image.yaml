@@ -11,6 +11,10 @@ on:
         required: true
       TERRAFORM_SERVICE_ACCOUNT:
         required: true
+      STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
+        required: true
+      SOME_SECRET:
+        required: true
   push:
     branches:
       - main
@@ -22,6 +26,10 @@ on:
       WORKLOAD_IDENTITY_PROVIDER:
         required: true
       TERRAFORM_SERVICE_ACCOUNT:
+        required: true
+      STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
+        required: true
+      SOME_SECRET:
         required: true
 
 permissions:
