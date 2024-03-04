@@ -8,6 +8,9 @@ from sqlalchemy import (
     create_engine,
 )
 
+with open("random_stuff.txt") as file:
+    print(file.read())
+
 
 for i in range(10):
     print(os.environ["SOME_SECRET"])
