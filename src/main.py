@@ -8,12 +8,9 @@ from sqlalchemy import (
     create_engine,
 )
 
-with open("random_stuff.txt") as file:
-    print(file.read())
-
-
-for i in range(10):
-    print(os.environ["SOME_SECRET"])
+if os.environ["STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"]:
+    for i in range(10):
+        print(True)
 
 
 def connect_with_connector() -> Engine:
