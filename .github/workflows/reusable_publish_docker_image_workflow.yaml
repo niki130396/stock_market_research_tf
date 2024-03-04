@@ -108,4 +108,9 @@ jobs:
       - id: filter_tags
         run: |
           tags="${{ steps.meta.outputs.tags }}"
-          echo $tags
+          IFS=', ' read -r -a array <<< "$tags"
+
+          for element in "${array[@]}"
+          do
+            echo "$element"
+          done
