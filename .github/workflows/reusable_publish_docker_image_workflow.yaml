@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     outputs:
-      image_tag: ${{ steps.meta.outputs.tags }}
+      image_tag: ${{ steps.filter_tags.outputs.image_tag }}
 
     steps:
       - id: checkout
@@ -109,8 +109,4 @@ jobs:
         run: |
           tags="${{ steps.meta.outputs.tags }}"
           IFS=', ' read -r -a array <<< "$tags"
-
-          for element in "${array[@]}"
-          do
-            echo "$element"
-          done
+          echo "image_tag=${array[0]}" >> $GITHUB_OUTPUT
