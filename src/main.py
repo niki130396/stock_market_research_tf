@@ -9,6 +9,10 @@ from sqlalchemy import (
 )
 
 
+for i in range(10):
+    print(os.environ["SOME_SECRET"])
+
+
 def connect_with_connector() -> Engine:
     """
     Initializes a connection pool for a Cloud SQL instance of Postgres.
