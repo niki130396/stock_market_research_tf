@@ -10,7 +10,7 @@ from sqlalchemy import (
 
 if os.environ["STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"]:
     for i in range(10):
-        print(True)
+        print(os.environ["STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"])
 
 
 def connect_with_connector() -> Engine:
