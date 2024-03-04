@@ -6,12 +6,6 @@ RUN pip install -r requirements.txt
 
 COPY src src
 
-RUN --mount=type=secret,id=STOCK_MARKET_RESEARCH_DB_USER_PASSWORD \
-    echo "$(cat /run/secrets/STOCK_MARKET_RESEARCH_DB_USER_PASSWORD)" >> db_password.txt \
-    && export STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=$(cat db_password.txt) \
-    && rm db_password.txt
-
 WORKDIR src
 
 CMD ["python", "main.py"]
-##
