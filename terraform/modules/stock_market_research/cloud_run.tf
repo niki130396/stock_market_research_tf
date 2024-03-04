@@ -21,7 +21,7 @@ resource "google_cloud_run_v2_job" "get_financial_statements" {
           value = var.stock_market_research_db_user_password
         }
         volume_mounts {
-          name = "cloud_sql"
+          name = "cloudsql"
           mount_path = "/cloudsql"
         }
       }
