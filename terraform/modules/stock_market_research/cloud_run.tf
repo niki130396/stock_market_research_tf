@@ -20,6 +20,14 @@ resource "google_cloud_run_v2_job" "get_financial_statements" {
           name  = "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"
           value = var.stock_market_research_db_user_password
         }
+        env {
+          name = "STOCK_MARKET_RESEARCH_DB_USERNAME"
+          value = google_sql_user.stock_market_research_db_user.name
+        }
+        env {
+          name = "STOCK_MARKET_RESEARCH_DB_HOST"
+          value = google_sql_database_instance.stock_market_research_db.connection_name
+        }
         volume_mounts {
           name = "cloudsql"
           mount_path = "/cloudsql"
