@@ -8,10 +8,6 @@ from sqlalchemy import (
     create_engine,
 )
 
-if os.environ["STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"]:
-    for i in range(10):
-        print(os.environ["STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"])
-
 
 def connect_with_connector() -> Engine:
     """
@@ -24,8 +20,8 @@ def connect_with_connector() -> Engine:
     # Cloud Secret Manager (https://cloud.google.com/secret-manager) to help
     # keep secrets safe.
 
-    instance_connection_name = "stock-market-research-410417:europe-west1:stock-market-research-db"  # e.g. 'project:region:instance'
-    db_user = "stock_market_research_db_user"  # e.g. 'my-db-user'
+    instance_connection_name = os.environ["STOCK_MARKET_RESEARCH_DB_HOST"]  # e.g. 'project:region:instance'
+    db_user = os.environ["STOCK_MARKET_RESEARCH_DB_USERNAME"]  # e.g. 'my-db-user'
     db_pass = os.environ["STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"] # e.g. 'my-db-password'
     db_name = "postgres"  # e.g. 'my-database'
 
