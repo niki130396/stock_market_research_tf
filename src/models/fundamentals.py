@@ -57,3 +57,4 @@ class FinancialStatementFact(Base):
     fiscal_year = mapped_column(String(10))
     fiscal_period = mapped_column(String(20))
     value = mapped_column(Integer)
+##
