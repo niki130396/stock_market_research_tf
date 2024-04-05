@@ -104,3 +104,7 @@ def test_models(setup_teardown_tables, connection_engine):
         financial_statement_attributes = session.query(FinancialStatementAttribute).all()
         for attribute in financial_statement_attributes:
             assert attribute.name in ["revenue", "costOfRevenue", "grossProfit"]
+
+
+def some_test():
+    assert 1 == 0
