@@ -2,9 +2,10 @@ name: Run pytest
 
 on:
   workflow_call:
-    environment:
-      required: false
-      type: string
+    inputs:
+      environment:
+        required: false
+        type: string
 
 permissions:
   contents: read
