@@ -106,5 +106,5 @@ def test_models(setup_teardown_tables, connection_engine):
             assert attribute.name in ["revenue", "costOfRevenue", "grossProfit"]
 
 
-def some_test():
+def test_error():
     assert 1 == 0
