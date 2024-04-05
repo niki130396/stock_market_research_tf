@@ -51,10 +51,11 @@ def connect_with_connector() -> Engine:
     return pool
 
 
-connection = connect_with_connector().raw_connection()
-cursor = connection.cursor()
+if __name__ == "__main__":
 
+    connection = connect_with_connector().raw_connection()
+    cursor = connection.cursor()
 
-cursor.execute("SELECT * FROM information_schema.tables")
-for row in cursor.fetchall():
-    print(row)
+    cursor.execute("SELECT * FROM information_schema.tables")
+    for row in cursor.fetchall():
+        print(row)

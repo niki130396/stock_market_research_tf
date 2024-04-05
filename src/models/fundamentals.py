@@ -43,6 +43,7 @@ class FinancialStatementAttribute(Base):
 
     id = mapped_column(Integer, primary_key=True)
     name = mapped_column(String(256))
+    friendly_name = mapped_column(String(256))
     description = mapped_column(String(256), nullable=True)
     statement_type_id: Mapped[int] = mapped_column(ForeignKey("statement_type_definition.id"))
     statement_type: Mapped["StatementTypeDefinition"] = relationship(back_populates="financial_statement_attributes")
@@ -57,4 +58,3 @@ class FinancialStatementFact(Base):
     fiscal_year = mapped_column(String(10))
     fiscal_period = mapped_column(String(20))
     value = mapped_column(Integer)
-##
