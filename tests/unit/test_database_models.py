@@ -104,3 +104,37 @@ def test_models(setup_teardown_tables, connection_engine):
         financial_statement_attributes = session.query(FinancialStatementAttribute).all()
         for attribute in financial_statement_attributes:
             assert attribute.name in ["revenue", "costOfRevenue", "grossProfit"]
+
+    with Session(engine) as session:
+        aapl = session.query(CompanyMetaData).filter_by(symbol="AAPL").first()
+        revenue = session.query(FinancialStatementAttribute).filter_by(name="revenue").first()
+        cost_of_revenue = session.query(FinancialStatementAttribute).filter_by(name="costOfRevenue").first()
+        gross_profit = session.query(FinancialStatementAttribute).filter_by(name="grossProfit").first()
+        revenue_aapl_2024_q1 = FinancialStatementFact(
+            company_symbol=aapl.symbol,
+            financial_statement_attribute=revenue.id,
+            fiscal_year=2024,
+            value=1_000_000_000
+        )
+        cost_of_revenue_aapl_2024_q1 = FinancialStatementFact(
+            company_symbol=aapl.symbol,
+            financial_statement_attribute=cost_of_revenue.id,
+            fiscal_year=2024,
+            value=700_000_000
+        )
+        gross_profit_aapl_2024_q1 = FinancialStatementFact(
+            company_symbol=aapl.symbol,
+            financial_statement_attribute=gross_profit.id,
+            fiscal_year=2024,
+            value=300_000_000
+        )
+
+        session.add_all([revenue_aapl_2024_q1, cost_of_revenue_aapl_2024_q1, gross_profit_aapl_2024_q1])
+        session.commit()
+
+    with Session(engine) as session:
+        revenue_aapl_2024_q1 = session.query(FinancialStatementFact).filter_by(company_symbol="AAPL").first()
+        revenue = session.query(FinancialStatementAttribute).filter_by(id=revenue_aapl_2024_q1.financial_statement_attribute).first()
+        assert revenue_aapl_2024_q1.value == 1_000_000_000
+        assert revenue.name == "revenue"
+        assert revenue.friendly_name == "Revenue"
