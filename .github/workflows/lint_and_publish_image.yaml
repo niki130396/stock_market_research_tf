@@ -39,8 +39,12 @@ permissions:
 
 
 jobs:
+  run-python-tests:
+    uses: ./.github/workflows/reusable_run_pytest.yaml
+
   lint-dockerfile:
     uses: ./.github/workflows/reusable_lint_dockerfile_workflow.yaml
+    needs: run-python-tests
     with:
       context: .
       file: docker/stock_market_research/Dockerfile
