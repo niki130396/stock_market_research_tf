@@ -8,6 +8,7 @@ from src.models.fundamentals import (
     FinancialStatementAttribute,
     FinancialStatementFact,
 )
+from src.utils.validation_schemas import COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR
 
 
 def test_db_engine_is_sqlite(connection_engine):
@@ -32,7 +33,7 @@ def test_models(setup_teardown_tables, connection_engine):
         name="Apple Inc",
         market_cap=10000000,
         country="United States",
-        ipo_year="1991",
+        ipo_date="1991-02-05",
         volume="123213123123",
         sector="Technology",
         industry="Hardware"
@@ -43,7 +44,7 @@ def test_models(setup_teardown_tables, connection_engine):
         name="Microsoft Inc",
         market_cap=100020000,
         country="United States",
-        ipo_year="1992",
+        ipo_date="1992-01-01",
         volume="1232131123123",
         sector="Technology",
         industry="Software"
@@ -138,3 +139,43 @@ def test_models(setup_teardown_tables, connection_engine):
         assert revenue_aapl_2024_q1.value == 1_000_000_000
         assert revenue.name == "revenue"
         assert revenue.friendly_name == "Revenue"
+
+
+def test_model_with_mixin(setup_teardown_tables, connection_engine):
+    engine = connection_engine
+
+    test_data = {
+        "symbol": "AAPL",
+        "price": 178.72,
+        "beta": 1.286802,
+        "volAvg": 58405568,
+        "mktCap": 2794144143933,
+        "lastDiv": 0.96,
+        "range": "124.17-198.23",
+        "changes": -0.13,
+        "companyName": "Apple Inc.",
+        "currency": "USD",
+        "ipoDate": "1980-12-12",
+        "cik": "0000320193",
+        "isin": "US0378331005",
+        "cusip": "037833100",
+        "exchange": "NASDAQ Global Select",
+        "exchangeShortName": "NASDAQ",
+        "industry": "Consumer Electronics",
+        "description": "Apple Inc.",
+        "ceo": "Mr. Timothy D. Cook",
+        "sector": "Technology",
+        "country": "US",
+        "fullTimeEmployees": "164000",
+    }
+    company1 = CompanyMetaData.map_fields(
+        COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR, test_data
+    )
+
+    with Session(engine) as session:
+        session.add(company1)
+        session.commit()
+
+        aapl = session.query(CompanyMetaData).filter_by(symbol="AAPL").first()
+
+        assert aapl.currency == "USD"

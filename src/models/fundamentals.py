@@ -4,6 +4,7 @@ from sqlalchemy import (
     Integer,
     String,
     ForeignKey,
+    Text,
 )
 from sqlalchemy.orm import (
     DeclarativeBase,
@@ -12,22 +13,27 @@ from sqlalchemy.orm import (
     Mapped,
 )
 
+from src.utils.mixins import MapFieldsFromJsonValidationSchemaMixin
+
 
 class Base(DeclarativeBase):
     pass
 
 
-class CompanyMetaData(Base):
+class CompanyMetaData(Base, MapFieldsFromJsonValidationSchemaMixin):
     __tablename__ = "company_meta_data"
 
     symbol = mapped_column(String(6), primary_key=True)
     name = mapped_column(String(50))
+    description = mapped_column(Text)
     market_cap = mapped_column(Integer)
+    currency = mapped_column(String(10))
     country = mapped_column(String(50))
-    ipo_year = mapped_column(String(6))
+    ipo_date = mapped_column(String(10))
     volume = mapped_column(String(30))
     sector = mapped_column(String(30))
     industry = mapped_column(String(30))
+    full_time_employees_count = mapped_column(String(50))
 
 
 class StatementTypeDefinition(Base):
