@@ -16,7 +16,7 @@ from src.utils.validation import (
 
 def get_company_details():
     all_symbols = read_file_from_storage_bucket(STOCK_MARKET_CLOUD_STORAGE_BUCKET, "company_symbols.csv")
-    not_available_symbols = all_symbols[(all_symbols["is_available"] == False) & (all_symbols["attempted"] == False)]["symbols"].tolist()
+    not_available_symbols = all_symbols[(all_symbols["is_available"] == False) & (all_symbols["attempted"] == False)]["symbol"].tolist()
 
     ENDPOINT = FINANCIAL_MODELLING_PREP_API + COMPANY_PROFILE_ENDPOINT
 
