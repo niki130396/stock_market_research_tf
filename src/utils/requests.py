@@ -16,7 +16,7 @@ async def get_item_async(endpoint: str, items: List[str], **kwargs):
 
     async with aiohttp.ClientSession() as session:
         for item in items:
-            url = endpoint + f"/{item}" + urlencode(kwargs)
+            url = endpoint + f"/{item}?" + urlencode(kwargs)
             async with session.get(url) as response:
                 operation = await response.json()
                 print(operation)
