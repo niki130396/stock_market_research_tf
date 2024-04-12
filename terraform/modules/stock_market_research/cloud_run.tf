@@ -29,7 +29,7 @@ resource "google_cloud_run_v2_job" "get_financial_statements" {
           value = google_sql_database_instance.stock_market_research_db.connection_name
         }
         env {
-          name = "FINANCIAL_MODELLING_PREP_API_TOKEN"
+          name = "FINANCIAL_MODELING_PREP_API_TOKEN"
           value = var.financial_modeling_prep_api_token
         }
         volume_mounts {
