@@ -1,3 +1,4 @@
+from os import environ
 import asyncio
 
 from src.utils.sql_helpers import connect_to_cloud_sql
@@ -20,7 +21,11 @@ def get_company_details():
 
     ENDPOINT = FINANCIAL_MODELLING_PREP_API + COMPANY_PROFILE_ENDPOINT
 
-    fetched_items = asyncio.run(get_item_async(ENDPOINT, not_available_symbols))
+    fetched_items = asyncio.run(get_item_async(
+        ENDPOINT,
+        not_available_symbols,
+        apikey=environ["FINANCIAL_MODELING_PREP_API_TOKEN"]
+    ))
     validated_items = validate_json_objects(fetched_items, COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR)
     return validated_items
 
