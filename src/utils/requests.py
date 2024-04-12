@@ -21,5 +21,5 @@ async def get_item_async(endpoint: str, items: List[str]):
             async with session.get(url, headers=headers) as response:
                 operation = await response.json()
                 print(operation)
-                results.append(operation)
+                results.extend(operation)
     return results
