@@ -31,8 +31,8 @@ def get_company_details():
 
     validated_items = validate_json_objects(fetched_items, COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR)
 
-    all_symbols.loc[all_symbols["symbols"].isin(newly_available_symbols), "is_available"] = True
-    all_symbols.loc[all_symbols["symbols"].isin(attempted_items), "attempted"] = True
+    all_symbols.loc[all_symbols["symbol"].isin(newly_available_symbols), "is_available"] = True
+    all_symbols.loc[all_symbols["symbol"].isin(attempted_items), "attempted"] = True
 
     write_dataframe_as_csv_to_storage_bucket(STOCK_MARKET_CLOUD_STORAGE_BUCKET, "company_symbols.csv", all_symbols)
     return validated_items
