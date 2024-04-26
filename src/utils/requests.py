@@ -17,9 +17,11 @@ async def get_company_information(endpoint: str, symbols: List[str], **kwargs):
     async with aiohttp.ClientSession() as session:
         encoded = urlencode(kwargs)
         for symbol in symbols:
+            print(symbol)
             url = endpoint + f"/{symbol}?" + encoded
             async with session.get(url) as response:
                 response_json = await response.json()
+                print(response_json)
                 if "Error Message" in response_json:
                     if response_json["Error Message"].startswith("Free plan is limited to US stocks only"):
                         attempted.append(symbol)
