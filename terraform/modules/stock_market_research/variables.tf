@@ -18,3 +18,8 @@ variable "financial_modeling_prep_api_token" {
   type      = string
   sensitive = true
 }
+
+variable "gcp_project_number" {
+  type    = string
+  default = "824941781846"
+}
