@@ -4,7 +4,7 @@ resource "google_cloud_scheduler_job" "schedule_get_company_details_job" {
   name             = "schedule-get-company-details-job"
   schedule         = "0 8 * * *"
   attempt_deadline = "320s"
-  region           = var.gcp_region
+  region           = "europe-west1"
 
   retry_config {
     retry_count = 3
