@@ -5,8 +5,8 @@ locals {
   }
 }
 
-resource "google_cloud_run_v2_job" "get_financial_statements" {
-  name = "get-financial-statements"
+resource "google_cloud_run_v2_job" "get_company_details" {
+  name = "get-company-details"
   location = "europe-north1"
 
   labels = local.stock_market_research_labels
@@ -14,7 +14,8 @@ resource "google_cloud_run_v2_job" "get_financial_statements" {
   template {
     template {
       containers {
-        image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research:latest"
+        image   = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research:latest"
+        command = ["python", "get_company_details.py"]
 
         env {
           name  = "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"

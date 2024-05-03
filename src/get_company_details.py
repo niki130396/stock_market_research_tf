@@ -1,6 +1,8 @@
 from os import environ
 import asyncio
 
+from sqlalchemy.orm import Session
+
 from src.utils.sql_helpers import connect_to_cloud_sql
 from src.definitions import (
     FINANCIAL_MODELLING_PREP_API,
@@ -14,9 +16,13 @@ from src.utils.validation import (
     COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR,
     validate_json_objects,
 )
+from src.models.fundamentals import CompanyMetaData
 
 
-def get_company_details():
+if __name__ == "__main__":
+
+    engine = connect_to_cloud_sql()
+
     all_symbols = read_file_from_storage_bucket(STOCK_MARKET_CLOUD_STORAGE_BUCKET, "company_symbols.csv")
     not_available_symbols = all_symbols[(all_symbols["is_available"] == False) & (all_symbols["attempted"] == False)]["symbol"].tolist()[:REQUEST_ATTEMPTS_BEFORE_FAIL]
 
@@ -35,16 +41,13 @@ def get_company_details():
     all_symbols.loc[all_symbols["symbol"].isin(attempted_items), "attempted"] = True
 
     write_dataframe_as_csv_to_storage_bucket(STOCK_MARKET_CLOUD_STORAGE_BUCKET, "company_symbols.csv", all_symbols)
-    return validated_items
 
-
-if __name__ == "__main__":
-
-    connection = connect_to_cloud_sql().raw_connection()
-    cursor = connection.cursor()
-
-    cursor.execute("SELECT * FROM information_schema.tables")
-    for row in cursor.fetchall():
-        print(row)
-
-    get_company_details()
+    with Session(engine) as session:
+        company_profiles = []
+        for company_profile_json in fetched_items:
+            company_profile_obj = CompanyMetaData.map_fields(
+                COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR, company_profile_json
+            )
+            company_profiles.append(company_profile_obj)
+        session.add_all(company_profiles)
+        session.commit()
