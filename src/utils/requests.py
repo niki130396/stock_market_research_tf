@@ -26,7 +26,7 @@ async def get_company_information(endpoint: str, symbols: List[str], **kwargs):
                     if response_json["Error Message"].startswith("Free plan is limited to US stocks only"):
                         attempted.append(symbol)
                     else:
-                        # Means we've reached the free limit and we haven't even attempted getting the information
+                        # Means we've reached the free limit
                         break
                 else:
                     attempted.append(symbol)
