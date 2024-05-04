@@ -3,6 +3,7 @@
 resource "google_cloud_scheduler_job" "schedule_get_company_details_job" {
   name             = "schedule-get-company-details-job"
   schedule         = "0 8 * * *"
+  time_zone        = "Europe/Sofia"
   attempt_deadline = "320s"
   region           = "europe-west1"
 
