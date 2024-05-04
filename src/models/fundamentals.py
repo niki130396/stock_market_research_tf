@@ -41,7 +41,6 @@ class CompanyMetaData(Base, MapFieldsFromJsonValidationSchemaMixin):
         A value of 7 would indicate that we have all 3 statements from the last run. A value of 3 indicates we only have
         2 statements, and a value of 1 indicates we have one statement only.
         """
-
     )
 
 
