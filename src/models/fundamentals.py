@@ -34,6 +34,15 @@ class CompanyMetaData(Base, MapFieldsFromJsonValidationSchemaMixin):
     sector = mapped_column(String(30))
     industry = mapped_column(String(30))
     full_time_employees_count = mapped_column(String(50))
+    statements_flag = mapped_column(
+        Integer,
+        default=0,
+        description="""A flag set to represent whether we have collected all 3 statements for a given company.
+        A value of 7 would indicate that we have all 3 statements from the last run. A value of 3 indicates we only have
+        2 statements, and a value of 1 indicates we have one statement only.
+        """
+
+    )
 
 
 class StatementTypeDefinition(Base):
