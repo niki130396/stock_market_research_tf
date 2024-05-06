@@ -5,6 +5,8 @@ from sqlalchemy import (
     String,
     ForeignKey,
     Text,
+    Date,
+    func,
 )
 from sqlalchemy.orm import (
     DeclarativeBase,
@@ -34,14 +36,15 @@ class CompanyMetaData(Base, MapFieldsFromJsonValidationSchemaMixin):
     sector = mapped_column(String(30))
     industry = mapped_column(String(30))
     full_time_employees_count = mapped_column(String(50))
-    statements_flag = mapped_column(
-        Integer,
-        default=0,
-        comment="""A flag set to represent whether we have collected all 3 statements for a given company.
-        A value of 7 would indicate that we have all 3 statements from the last run. A value of 3 indicates we only have
-        2 statements, and a value of 1 indicates we have one statement only.
-        """
-    )
+
+
+class RetrievedStatementsLog(Base):
+    __tablename__ = "retrieved_statements_log"
+
+    id = mapped_column(Integer, primary_key=True)
+    symbol: Mapped[str] = mapped_column(ForeignKey("company_meta_data.symbol"))
+    statement_type = mapped_column(ForeignKey("statement_type_definition.id"))
+    retrieval_date = mapped_column(Date, default=func.current_date())
 
 
 class StatementTypeDefinition(Base):
