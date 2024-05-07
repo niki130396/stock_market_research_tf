@@ -11,7 +11,7 @@ from src.definitions import (
     REQUEST_ATTEMPTS_BEFORE_FAIL,
 )
 from src.utils.google_storage import read_file_from_storage_bucket, write_dataframe_as_csv_to_storage_bucket
-from src.utils.requests import get_company_information
+from src.utils.requests import financial_modeling_prep_async_request
 from src.utils.validation import (
     COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR,
     validate_json_objects,
@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     ENDPOINT = FINANCIAL_MODELLING_PREP_API + COMPANY_PROFILE_ENDPOINT
 
-    fetched_items, attempted_items = asyncio.run(get_company_information(
+    fetched_items, attempted_items = asyncio.run(financial_modeling_prep_async_request(
         ENDPOINT,
         not_available_symbols,
         apikey=environ["FINANCIAL_MODELING_PREP_API_TOKEN"]

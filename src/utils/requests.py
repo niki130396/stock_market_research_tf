@@ -4,7 +4,7 @@ from typing import List
 import aiohttp
 
 
-async def get_company_information(endpoint: str, symbols: List[str], **kwargs):
+async def financial_modeling_prep_async_request(endpoint: str, symbols: List[str], **kwargs):
     """
     Function for fetching items by doing async http requests.
     The function will append each of the items values to the endpoint parameter as a suffix and will make an
