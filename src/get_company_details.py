@@ -26,10 +26,8 @@ if __name__ == "__main__":
     all_symbols = read_file_from_storage_bucket(STOCK_MARKET_CLOUD_STORAGE_BUCKET, "company_symbols.csv")
     not_available_symbols = all_symbols[(all_symbols["is_available"] == False) & (all_symbols["attempted"] == False)]["symbol"].tolist()[:REQUEST_ATTEMPTS_BEFORE_FAIL]
 
-    ENDPOINT = FINANCIAL_MODELLING_PREP_API + COMPANY_PROFILE_ENDPOINT
-
     fetched_items, attempted_items = asyncio.run(financial_modeling_prep_async_request(
-        ENDPOINT,
+        COMPANY_PROFILE_ENDPOINT,
         not_available_symbols,
         apikey=environ["FINANCIAL_MODELING_PREP_API_TOKEN"]
     ))
