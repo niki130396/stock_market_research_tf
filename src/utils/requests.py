@@ -19,6 +19,7 @@ async def financial_modeling_prep_async_request(endpoint: str, symbols: List[str
         for symbol in symbols:
             print(symbol)
             url = endpoint + f"/{symbol}?" + encoded
+            print(url)
             async with session.get(url) as response:
                 response_json = await response.json()
                 print(response_json)

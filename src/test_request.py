@@ -1,11 +1,18 @@
 import os
-import requests
-from urllib.parse import urlencode
+import asyncio
 
+from src.utils.requests import financial_modeling_prep_async_request
+from src.definitions import (
+    FINANCIAL_MODELLING_PREP_API,
+    COMPANY_PROFILE_ENDPOINT,
+)
 
 if __name__ == "__main__":
     api_token = os.environ["FINANCIAL_MODELING_PREP_API_TOKEN"]
+    ENDPOINT = FINANCIAL_MODELLING_PREP_API + COMPANY_PROFILE_ENDPOINT
 
-    response = requests.get(f"https://financialmodelingprep.com/api/v3/profile/ACCMF?{urlencode({'apikey': api_token})}")
-    print(response.json())
-    print(response.text)
+    fetched_items, attempted_items = asyncio.run(financial_modeling_prep_async_request(
+        ENDPOINT,
+        ["ACLS", "ACMB"],
+        apikey=api_token
+    ))
