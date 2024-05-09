@@ -6,6 +6,6 @@ RUN pip install -r requirements.txt
 
 COPY src src
 
-WORKDIR src
+ENV PYTHONPATH "${PYTHONPATH}:/src"
 
-CMD ["python", "main.py"]
+ENTRYPOINT ["python", "src/main.py"]

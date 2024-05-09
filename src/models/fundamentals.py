@@ -5,6 +5,8 @@ from sqlalchemy import (
     String,
     ForeignKey,
     Text,
+    Date,
+    func,
 )
 from sqlalchemy.orm import (
     DeclarativeBase,
@@ -34,6 +36,15 @@ class CompanyMetaData(Base, MapFieldsFromJsonValidationSchemaMixin):
     sector = mapped_column(String(30))
     industry = mapped_column(String(30))
     full_time_employees_count = mapped_column(String(50))
+
+
+class RetrievedStatementsLog(Base):
+    __tablename__ = "retrieved_statements_log"
+
+    id = mapped_column(Integer, primary_key=True)
+    symbol: Mapped[str] = mapped_column(ForeignKey("company_meta_data.symbol"))
+    statement_type = mapped_column(ForeignKey("statement_type_definition.id"))
+    retrieval_date = mapped_column(Date, default=func.current_date())
 
 
 class StatementTypeDefinition(Base):

@@ -3,7 +3,7 @@
 resource "google_sql_database_instance" "stock_market_research_db" {
   name                = "stock-market-research-db"
   database_version    = "POSTGRES_15"
-  region              = "europe-west1"
+  region              = var.gcp_region
   deletion_protection = false
 
   settings {

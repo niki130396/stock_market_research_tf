@@ -29,3 +29,21 @@ resource "google_project_iam_member" "cloud_sql_client" {
   project = var.gcp_project_full
   role    = "roles/cloudsql.client"
 }
+
+resource "google_project_iam_member" "cloud_storage_object_user" {
+  for_each = toset([
+    "serviceAccount:${google_service_account.stock_market_research_user.email}"
+  ])
+  member   = each.value
+  project  = var.gcp_project_full
+  role     = "roles/storage.objectUser"
+}
+
+resource "google_project_iam_member" "cloud_run_job_invoker" {
+  for_each = toset([
+    "serviceAccount:${google_service_account.stock_market_research_user.email}"
+  ])
+  member  = each.value
+  project = var.gcp_project_full
+  role    = "roles/run.invoker"
+}

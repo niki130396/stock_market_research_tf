@@ -1,4 +1,3 @@
-import pytest
 from sqlalchemy.orm import Session
 
 from src.models.fundamentals import (
@@ -8,7 +7,7 @@ from src.models.fundamentals import (
     FinancialStatementAttribute,
     FinancialStatementFact,
 )
-from src.utils.validation_schemas import COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR
+from src.utils.validation import COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR
 
 
 def test_db_engine_is_sqlite(connection_engine):

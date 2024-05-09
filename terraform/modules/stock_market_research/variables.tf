@@ -10,5 +10,16 @@ variable "gcp_region" {
 }
 
 variable "stock_market_research_db_user_password" {
-  type = string
+  type      = string
+  sensitive = true
+}
+
+variable "financial_modeling_prep_api_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "gcp_project_number" {
+  type    = string
+  default = "824941781846"
 }
