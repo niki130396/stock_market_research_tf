@@ -27,15 +27,15 @@ class CompanyMetaData(Base, MapFieldsFromJsonValidationSchemaMixin):
 
     symbol = mapped_column(String(6), primary_key=True)
     name = mapped_column(String(50))
-    description = mapped_column(Text)
-    market_cap = mapped_column(Integer)
-    currency = mapped_column(String(10))
-    country = mapped_column(String(50))
-    ipo_date = mapped_column(String(10))
-    volume = mapped_column(String(30))
-    sector = mapped_column(String(30))
-    industry = mapped_column(String(30))
-    full_time_employees_count = mapped_column(String(50))
+    description = mapped_column(Text, nullable=True)
+    market_cap = mapped_column(Integer, nullable=True)
+    currency = mapped_column(String(10), nullable=True)
+    country = mapped_column(String(50), nullable=True)
+    ipo_date = mapped_column(String(10), nullable=True)
+    volume = mapped_column(String(30), nullable=True)
+    sector = mapped_column(String(30), nullable=True)
+    industry = mapped_column(String(30), nullable=True)
+    full_time_employees_count = mapped_column(String(50), nullable=True)
 
 
 class RetrievedStatementsLog(Base):

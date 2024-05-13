@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     with Session(engine) as session:
         company_profiles = []
-        for company_profile_json in fetched_items:
+        for company_profile_json in validated_items:
             company_profile_obj = CompanyMetaData.map_fields(
                 COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR, company_profile_json
             )
