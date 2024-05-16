@@ -2,6 +2,7 @@ from typing import List
 
 from sqlalchemy import (
     Integer,
+    BigInteger,
     String,
     ForeignKey,
     Text,
@@ -28,7 +29,7 @@ class CompanyMetaData(Base, MapFieldsFromJsonValidationSchemaMixin):
     symbol = mapped_column(String(6), primary_key=True)
     name = mapped_column(String(50))
     description = mapped_column(Text, nullable=True)
-    market_cap = mapped_column(Integer, nullable=True)
+    market_cap = mapped_column(BigInteger, nullable=True)
     currency = mapped_column(String(10), nullable=True)
     country = mapped_column(String(50), nullable=True)
     ipo_date = mapped_column(String(10), nullable=True)
@@ -74,4 +75,4 @@ class FinancialStatementFact(Base):
     financial_statement_attribute: Mapped[int] = mapped_column(ForeignKey("financial_statement_attribute.id"))
     fiscal_year = mapped_column(String(10))
     fiscal_period = mapped_column(String(20))
-    value = mapped_column(Integer)
+    value = mapped_column(BigInteger)
