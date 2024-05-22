@@ -33,9 +33,9 @@ class CompanyMetaData(Base, MapFieldsFromJsonValidationSchemaMixin):
     currency = mapped_column(String(10), nullable=True)
     country = mapped_column(String(50), nullable=True)
     ipo_date = mapped_column(String(10), nullable=True)
-    volume = mapped_column(String(30), nullable=True)
-    sector = mapped_column(String(30), nullable=True)
-    industry = mapped_column(String(30), nullable=True)
+    volume = mapped_column(String(128), nullable=True)
+    sector = mapped_column(String(128), nullable=True)
+    industry = mapped_column(String(128), nullable=True)
     full_time_employees_count = mapped_column(String(50), nullable=True)
 
 
