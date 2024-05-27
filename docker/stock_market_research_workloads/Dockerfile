@@ -1,6 +1,6 @@
 FROM python:3.12-slim-bullseye
 
-COPY requirements.txt requirements.txt
+COPY requirements/stock_market_research_workloads.txt requirements.txt
 
 RUN pip install -r requirements.txt
 

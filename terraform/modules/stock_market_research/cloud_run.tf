@@ -14,8 +14,8 @@ resource "google_cloud_run_v2_job" "get_company_details" {
   template {
     template {
       containers {
-        image   = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research:latest"
-        command = ["python", "src/get_company_details.py"]
+        image   = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_workloads:latest"
+        command = ["python", "stock_market_research_workloads/get_company_details.py"]
 
         env {
           name  = "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"
