@@ -41,6 +41,8 @@ permissions:
 jobs:
   run-python-tests:
     uses: ./.github/workflows/reusable_run_pytest.yaml
+    with:
+      dependencies_path: 'requirements/stock_market_research_workloads.txt'
 
   lint-dockerfile:
     uses: ./.github/workflows/reusable_lint_dockerfile_workflow.yaml

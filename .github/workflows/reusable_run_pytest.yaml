@@ -6,6 +6,9 @@ on:
       environment:
         required: false
         type: string
+      dependencies_path:
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -31,7 +34,7 @@ jobs:
 
       - id: install_requirements
         run: |
-          pip install -r requirements.txt
+          pip install -r ${{ inputs.dependencies_path }}
       
       - id: execute_pytest
         run: |
