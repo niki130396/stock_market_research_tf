@@ -1,13 +1,13 @@
 from sqlalchemy.orm import Session
 
-from src.models.fundamentals import (
+from stock_market_research_workloads.models.fundamentals import (
     Base,
     CompanyMetaData,
     StatementTypeDefinition,
     FinancialStatementAttribute,
     FinancialStatementFact,
 )
-from src.utils.validation import COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR
+from stock_market_research_workloads.utils.validation import COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR
 
 
 def test_db_engine_is_sqlite(connection_engine):

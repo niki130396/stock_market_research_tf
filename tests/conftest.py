@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import create_engine
 
-from src.models.fundamentals import Base
+from stock_market_research_workloads.models.fundamentals import Base
 
 
 @pytest.fixture

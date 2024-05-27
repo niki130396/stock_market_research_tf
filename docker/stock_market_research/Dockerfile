@@ -4,8 +4,8 @@ COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
-COPY src src
+COPY stock_market_research_workloads stock_markeet_research_workloads
 
-ENV PYTHONPATH "${PYTHONPATH}:/src"
+ENV PYTHONPATH "${PYTHONPATH}:/stock_market_research_workloads"
 
-ENTRYPOINT ["python", "src/main.py"]
+ENTRYPOINT ["python", "stock_market_research_workloads/main.py"]

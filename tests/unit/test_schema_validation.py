@@ -1,7 +1,7 @@
 import pytest
 from jsonschema import validate, ValidationError
 
-from src.utils.validation import (
+from stock_market_research_workloads.utils.validation import (
     COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR
 )
 

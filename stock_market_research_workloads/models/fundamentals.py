@@ -16,7 +16,7 @@ from sqlalchemy.orm import (
     Mapped,
 )
 
-from src.utils.mixins import MapFieldsFromJsonValidationSchemaMixin
+from stock_market_research_workloads.utils.mixins import MapFieldsFromJsonValidationSchemaMixin
 
 
 class Base(DeclarativeBase):

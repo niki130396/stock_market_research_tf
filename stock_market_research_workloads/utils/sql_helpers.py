@@ -9,7 +9,7 @@ from sqlalchemy import (
     func,
 )
 
-from src.models.fundamentals import (
+from stock_market_research_workloads.models.fundamentals import (
     CompanyMetaData,
     RetrievedStatementsLog,
     StatementTypeDefinition,

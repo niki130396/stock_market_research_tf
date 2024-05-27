@@ -5,7 +5,7 @@ from jsonschema import (
     ValidationError,
 )
 
-from src.models.fundamentals import (
+from stock_market_research_workloads.models.fundamentals import (
     CompanyMetaData,
 )
 
