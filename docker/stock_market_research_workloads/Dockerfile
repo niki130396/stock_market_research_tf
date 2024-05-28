@@ -4,7 +4,7 @@ COPY requirements/stock_market_research_workloads.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
-COPY stock_market_research_workloads stock_markeet_research_workloads
+COPY stock_market_research_workloads stock_market_research_workloads
 
 ENV PYTHONPATH "${PYTHONPATH}:/stock_market_research_workloads"
 
