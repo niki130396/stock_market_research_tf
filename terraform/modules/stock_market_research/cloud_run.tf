@@ -62,11 +62,9 @@ resource "google_cloud_run_v2_service" "stock_market_research_dashboard" {
   labels = local.stock_market_research_labels
 
   template {
-    template {
-      containers {
-        image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:latest"
-      }
-      service_account = google_service_account.stock_market_research_user.email
+    containers {
+      image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:latest"
     }
+    service_account = google_service_account.stock_market_research_user.email
   }
 }
