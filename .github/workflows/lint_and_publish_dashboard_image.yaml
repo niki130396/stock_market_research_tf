@@ -41,7 +41,6 @@ permissions:
 jobs:
   lint-dockerfile:
     uses: ./.github/workflows/reusable_lint_dockerfile_workflow.yaml
-    needs: run-python-tests
     with:
       context: .
       file: docker/stock_market_research_dashboard/Dockerfile
