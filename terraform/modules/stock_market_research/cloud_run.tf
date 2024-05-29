@@ -64,6 +64,16 @@ resource "google_cloud_run_v2_service" "stock_market_research_dashboard" {
   template {
     containers {
       image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:latest"
+      startup_probe {
+        initial_delay_seconds = 0
+        timeout_seconds = 1
+        period_seconds = 3
+        failure_threshold = 1
+        tcp_socket {
+          port = 8050
+        }
+      }
+
     }
     service_account = google_service_account.stock_market_research_user.email
   }
