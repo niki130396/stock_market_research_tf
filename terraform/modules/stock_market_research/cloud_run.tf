@@ -76,6 +76,12 @@ resource "google_cloud_run_v2_service" "stock_market_research_dashboard" {
           port = 8050
         }
       }
+      liveliness_probe {
+        http_get {
+          path = "/"
+          port = 8050
+        }
+      }
 
     }
     service_account = google_service_account.stock_market_research_user.email
