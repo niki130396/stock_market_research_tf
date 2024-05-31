@@ -41,7 +41,7 @@ app.layout = html.Div([
     )
 ])
 
-# Define the callback to update the graph
+
 @app.callback(
     Output('scatter-plot', 'figure'),
     Input('x-axis-dropdown', 'value'),
