@@ -12,6 +12,4 @@ EXPOSE 8050
 
 WORKDIR stock_market_research_dashboard
 
-#ENTRYPOINT ["python", "stock_market_research_dashboard/app.py"]
-
-CMD ["gunicorn", "--bind", "0.0.0.0:8050", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8050", "app:server"]

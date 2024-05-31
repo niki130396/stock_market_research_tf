@@ -20,6 +20,8 @@ fig = px.scatter(df, x='x', y='y', color='category')
 # Initialize the Dash app
 app = dash.Dash(__name__)
 
+server = app.server
+
 # Define the layout of the app
 app.layout = html.Div([
     html.H1("Simple Scatter Plot"),
