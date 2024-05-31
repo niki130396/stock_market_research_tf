@@ -1,7 +1,10 @@
 
 locals {
-  stock_market_research_labels = {
-    "group" : "stock_market_research"
+  stock_market_research_workload_labels = {
+    "group" : "stock_market_research_workloads"
+  }
+  stock_market_research_dashboard_labels = {
+    "group": "stock_market_research_dashboard"
   }
 }
 
@@ -9,7 +12,7 @@ resource "google_cloud_run_v2_job" "get_company_details" {
   name = "get-company-details"
   location = "europe-north1"
 
-  labels = local.stock_market_research_labels
+  labels = local.stock_market_research_workload_labels
 
   template {
     template {
@@ -59,7 +62,7 @@ resource "google_cloud_run_v2_service" "stock_market_research_dashboard" {
   location = var.gcp_region
   ingress = "INGRESS_TRAFFIC_ALL"
 
-  labels = local.stock_market_research_labels
+  labels = local.stock_market_research_dashboard_labels
 
   template {
     containers {

@@ -74,7 +74,7 @@ jobs:
     with:
       image_tag: ${{ needs.publish-image.outputs.image_tag }}
       job_project_id: stock-market-research-410417
-      job_group_label: stock_market_research
+      job_group_label: stock_market_research_workloads
       environment: terraform-apply
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
