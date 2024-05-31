@@ -4,7 +4,7 @@ resource "google_artifact_registry_repository" "docker" {
   format        = "DOCKER"
 
   cleanup_policy_dry_run = false
-  cleanup_policy {
+  cleanup_policies {
     id     = "keep-minimum-versions"
     action = "KEEP"
     most_recent_versions {
