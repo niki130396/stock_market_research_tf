@@ -1,11 +1,11 @@
 terraform {
   required_providers {
     google = {
-      version = "= 5.6.0"
+      version = "= 5.31.0"
       source = "hashicorp/google"
     }
   }
-  required_version = ">= 1.3.7"
+  required_version = ">= 1.8.4"
 
   backend "gcs" {
     bucket = "stock-market-research-tf-state-stock-market-research"
