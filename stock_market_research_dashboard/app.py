@@ -164,7 +164,6 @@ main_content = html.Div(className="main_content", children=[
     )
 ])
 
-# Define the layout of the app
 app.layout = html.Div(className="container", children=[
     sidebar,
     main_content,
