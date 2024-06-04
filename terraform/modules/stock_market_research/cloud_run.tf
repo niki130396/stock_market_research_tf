@@ -69,7 +69,7 @@ resource "google_cloud_run_v2_service" "stock_market_research_dashboard" {
       ports {
         container_port = 8050
       }
-      image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:fundamentals_tables-1.0.19"
+      image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:fundamentals_tables-1.0.22"
       startup_probe {
         initial_delay_seconds = 0
         timeout_seconds = 1
