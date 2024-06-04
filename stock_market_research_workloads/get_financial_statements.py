@@ -5,12 +5,12 @@ from os import environ
 from sqlalchemy.orm import Session
 
 from definitions import LOCAL_STATEMENT_TYPE_TO_ENDPOINT_MAPPING
-from src.utils.sql_helpers import (
+from stock_market_research_workloads.utils.sql_helpers import (
     connect_to_cloud_sql,
     get_companies_to_retrieve,
 )
-from src.utils.requests import financial_modeling_prep_async_request
-from src.models.fundamentals import (
+from stock_market_research_workloads.utils.requests import financial_modeling_prep_async_request
+from stock_market_research_workloads.models.fundamentals import (
     StatementTypeDefinition,
     RetrievedStatementsLog,
 )

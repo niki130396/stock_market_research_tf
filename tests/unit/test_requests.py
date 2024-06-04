@@ -1,6 +1,6 @@
 import pytest
 
-from src.utils.requests import financial_modeling_prep_async_request
+from stock_market_research_workloads.utils.requests import financial_modeling_prep_async_request
 
 
 @pytest.mark.asyncio

@@ -1,0 +1,13 @@
+.container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-areas: "sidebar main_content";
+  height: 100vh;
+}
+
+
+.main_content {
+  grid-area: main_content;
+  padding: 20px;
+  overflow-y: auto;
+}

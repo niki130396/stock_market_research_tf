@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import create_engine
 
-from src.models.fundamentals import Base
+from stock_market_research_workloads.models.fundamentals import Base
 
 
 @pytest.fixture
@@ -77,7 +77,7 @@ def patch_client_response_get_company_information(monkeypatch):
         ])
         return mocker
 
-    monkeypatch.setattr("src.utils.requests.aiohttp.ClientSession.get", patch)
+    monkeypatch.setattr("stock_market_research_workloads.utils.requests.aiohttp.ClientSession.get", patch)
 
 
 @pytest.fixture
@@ -88,7 +88,7 @@ def patch_client_response_get_company_information_free_plan(monkeypatch):
         })
         return mocker
 
-    monkeypatch.setattr("src.utils.requests.aiohttp.ClientSession.get", patch)
+    monkeypatch.setattr("stock_market_research_workloads.utils.requests.aiohttp.ClientSession.get", patch)
 
 
 @pytest.fixture
@@ -99,7 +99,7 @@ def patch_client_response_get_company_information_limit_reach(monkeypatch):
         })
         return mocker
 
-    monkeypatch.setattr("src.utils.requests.aiohttp.ClientSession.get", patch)
+    monkeypatch.setattr("stock_market_research_workloads.utils.requests.aiohttp.ClientSession.get", patch)
 
 
 @pytest.fixture
@@ -309,7 +309,7 @@ def patch_client_response_get_income_statements(monkeypatch):
         ])
         return mocker
 
-    monkeypatch.setattr("src.utils.requests.aiohttp.ClientSession.get", patch)
+    monkeypatch.setattr("stock_market_research_workloads.utils.requests.aiohttp.ClientSession.get", patch)
 
 
 @pytest.fixture
@@ -599,7 +599,7 @@ def patch_client_response_get_balance_sheet_statements(monkeypatch):
         ])
         return mocker
 
-    monkeypatch.setattr("src.utils.requests.aiohttp.ClientSession.get", patch)
+    monkeypatch.setattr("stock_market_research_workloads.utils.requests.aiohttp.ClientSession.get", patch)
 
 
 @pytest.fixture
@@ -819,4 +819,4 @@ def patch_client_response_get_cash_flow_statements(monkeypatch):
         ])
         return mocker
 
-    monkeypatch.setattr("src.utils.requests.aiohttp.ClientSession.get", patch)
+    monkeypatch.setattr("stock_market_research_workloads.utils.requests.aiohttp.ClientSession.get", patch)

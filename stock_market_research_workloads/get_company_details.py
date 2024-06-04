@@ -3,20 +3,20 @@ import asyncio
 
 from sqlalchemy.orm import Session
 
-from src.utils.sql_helpers import connect_to_cloud_sql
-from src.definitions import (
+from stock_market_research_workloads.utils.sql_helpers import connect_to_cloud_sql
+from stock_market_research_workloads.definitions import (
     FINANCIAL_MODELLING_PREP_API,
     STOCK_MARKET_CLOUD_STORAGE_BUCKET,
     COMPANY_PROFILE_ENDPOINT,
     REQUEST_ATTEMPTS_BEFORE_FAIL,
 )
-from src.utils.google_storage import read_file_from_storage_bucket, write_dataframe_as_csv_to_storage_bucket
-from src.utils.requests import financial_modeling_prep_async_request
-from src.utils.validation import (
+from stock_market_research_workloads.utils.google_storage import read_file_from_storage_bucket, write_dataframe_as_csv_to_storage_bucket
+from stock_market_research_workloads.utils.requests import financial_modeling_prep_async_request
+from stock_market_research_workloads.utils.validation import (
     COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR,
     validate_json_objects,
 )
-from src.models.fundamentals import CompanyMetaData
+from stock_market_research_workloads.models.fundamentals import CompanyMetaData
 
 
 if __name__ == "__main__":
@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     with Session(engine) as session:
         company_profiles = []
-        for company_profile_json in fetched_items:
+        for company_profile_json in validated_items:
             company_profile_obj = CompanyMetaData.map_fields(
                 COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR, company_profile_json
             )

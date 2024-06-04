@@ -1,0 +1,75 @@
+name: Lint and publish dashboard image
+
+on:
+  pull_request:
+    paths:
+      - 'stock_market_research_dashboard/**'
+      - 'docker/stock_market_research_dashboard/**'
+      - 'requirements/stock_market_research_dashboard.txt'
+    secrets:
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      TERRAFORM_SERVICE_ACCOUNT:
+        required: true
+      STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
+        required: true
+      SOME_SECRET:
+        required: true
+  push:
+    branches:
+      - main
+    paths:
+      - 'stock_market_research_dashboard/**'
+      - 'docker/stock_market_research_dashboard/**'
+      - 'requirements/stock_market_research_dashboard.txt'
+    secrets:
+      WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      TERRAFORM_SERVICE_ACCOUNT:
+        required: true
+      STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
+        required: true
+      SOME_SECRET:
+        required: true
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+  pull-requests: write
+
+
+jobs:
+  lint-dockerfile:
+    uses: ./.github/workflows/reusable_lint_dockerfile_workflow.yaml
+    with:
+      context: .
+      file: docker/stock_market_research_dashboard/Dockerfile
+      image_name: stock_market_research_dashboard
+      environment: terraform-plan
+    secrets:
+      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
+      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+
+  publish-image:
+    uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
+    needs: lint-dockerfile
+    with:
+      context: .
+      file: docker/stock_market_research_dashboard/Dockerfile
+      image_name: stock_market_research_dashboard
+      environment: terraform-apply
+    secrets:
+      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
+      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+
+  update-cloud-run-job:
+    uses: ./.github/workflows/reusable_update_cloud_run_job.yaml
+    needs: publish-image
+    with:
+      image_tag: ${{ needs.publish-image.outputs.image_tag }}
+      job_project_id: stock-market-research-410417
+      job_group_label: stock_market_research_dashboard
+      environment: terraform-apply
+    secrets:
+      service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
+      workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'

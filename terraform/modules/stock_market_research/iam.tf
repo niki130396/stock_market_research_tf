@@ -47,3 +47,12 @@ resource "google_project_iam_member" "cloud_run_job_invoker" {
   project = var.gcp_project_full
   role    = "roles/run.invoker"
 }
+
+resource "google_cloud_run_service_iam_binding" "stock_market_research_dashboard" {
+  members = [
+    "allUsers"
+  ]
+  role    = "roles/run.invoker"
+  service = google_cloud_run_v2_service.stock_market_research_dashboard.name
+  location = var.gcp_region
+}

@@ -2,6 +2,7 @@ from typing import List
 
 from sqlalchemy import (
     Integer,
+    BigInteger,
     String,
     ForeignKey,
     Text,
@@ -15,7 +16,7 @@ from sqlalchemy.orm import (
     Mapped,
 )
 
-from src.utils.mixins import MapFieldsFromJsonValidationSchemaMixin
+from stock_market_research_workloads.utils.mixins import MapFieldsFromJsonValidationSchemaMixin
 
 
 class Base(DeclarativeBase):
@@ -26,16 +27,16 @@ class CompanyMetaData(Base, MapFieldsFromJsonValidationSchemaMixin):
     __tablename__ = "company_meta_data"
 
     symbol = mapped_column(String(6), primary_key=True)
-    name = mapped_column(String(50))
-    description = mapped_column(Text)
-    market_cap = mapped_column(Integer)
-    currency = mapped_column(String(10))
-    country = mapped_column(String(50))
-    ipo_date = mapped_column(String(10))
-    volume = mapped_column(String(30))
-    sector = mapped_column(String(30))
-    industry = mapped_column(String(30))
-    full_time_employees_count = mapped_column(String(50))
+    name = mapped_column(String(128))
+    description = mapped_column(Text, nullable=True)
+    market_cap = mapped_column(BigInteger, nullable=True)
+    currency = mapped_column(String(128), nullable=True)
+    country = mapped_column(String(128), nullable=True)
+    ipo_date = mapped_column(String(10), nullable=True)
+    volume = mapped_column(String(128), nullable=True)
+    sector = mapped_column(String(128), nullable=True)
+    industry = mapped_column(String(128), nullable=True)
+    full_time_employees_count = mapped_column(String(128), nullable=True)
 
 
 class RetrievedStatementsLog(Base):
@@ -74,4 +75,4 @@ class FinancialStatementFact(Base):
     financial_statement_attribute: Mapped[int] = mapped_column(ForeignKey("financial_statement_attribute.id"))
     fiscal_year = mapped_column(String(10))
     fiscal_period = mapped_column(String(20))
-    value = mapped_column(Integer)
+    value = mapped_column(BigInteger)

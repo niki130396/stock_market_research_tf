@@ -1,13 +1,13 @@
 from sqlalchemy.orm import Session
 
-from src.models.fundamentals import (
+from stock_market_research_workloads.models.fundamentals import (
     Base,
     CompanyMetaData,
     StatementTypeDefinition,
     FinancialStatementAttribute,
     FinancialStatementFact,
 )
-from src.utils.validation import COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR
+from stock_market_research_workloads.utils.validation import COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR
 
 
 def test_db_engine_is_sqlite(connection_engine):
@@ -153,7 +153,7 @@ def test_model_with_mixin(setup_teardown_tables, connection_engine):
         "range": "124.17-198.23",
         "changes": -0.13,
         "companyName": "Apple Inc.",
-        "currency": "USD",
+        "currency": None,
         "ipoDate": "1980-12-12",
         "cik": "0000320193",
         "isin": "US0378331005",
@@ -177,4 +177,4 @@ def test_model_with_mixin(setup_teardown_tables, connection_engine):
 
         aapl = session.query(CompanyMetaData).filter_by(symbol="AAPL").first()
 
-        assert aapl.currency == "USD"
+        assert aapl.currency is None

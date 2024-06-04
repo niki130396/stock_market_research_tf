@@ -5,7 +5,7 @@ from jsonschema import (
     ValidationError,
 )
 
-from src.models.fundamentals import (
+from stock_market_research_workloads.models.fundamentals import (
     CompanyMetaData,
 )
 
@@ -21,7 +21,7 @@ COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR = {
             "database_table_related_field": CompanyMetaData.volume
         },
         "mktCap": {
-            "type": "number",
+            "type": ["number", "null"],
             "database_table_related_field": CompanyMetaData.market_cap
         },
         "companyName": {
@@ -29,7 +29,7 @@ COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR = {
             "database_table_related_field": CompanyMetaData.name
         },
         "currency": {
-            "type": "string",
+            "type": ["string", "null"],
             "database_table_related_field": CompanyMetaData.currency
         },
         "industry": {
@@ -37,7 +37,7 @@ COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR = {
             "database_table_related_field": CompanyMetaData.industry
         },
         "description": {
-            "type": "string",
+            "type": ["string", "null"],
             "database_table_related_field": CompanyMetaData.description
         },
         "sector": {
@@ -45,15 +45,15 @@ COMPANY_METADATA_RESPONSE_SCHEMA_VALIDATOR = {
             "database_table_related_field": CompanyMetaData.sector
         },
         "country": {
-            "type": "string",
+            "type": ["string", "null"],
             "database_table_related_field": CompanyMetaData.country
         },
         "fullTimeEmployees": {
-            "type": "string",
+            "type": ["string", "null"],
             "database_table_related_field": CompanyMetaData.full_time_employees_count
         },
         "ipoDate": {
-            "type": "string",
+            "type": ["string", "null"],
             "database_table_related_field": CompanyMetaData.ipo_date
         },
     },

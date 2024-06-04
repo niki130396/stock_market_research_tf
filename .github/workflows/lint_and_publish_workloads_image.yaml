@@ -1,11 +1,11 @@
-name: Lint and publish image
+name: Lint and publish workloads image
 
 on:
   pull_request:
     paths:
-      - 'src/**'
-      - 'docker/**'
-      - 'requirements.txt'
+      - 'stock_market_research_workloads/**'
+      - 'docker/stock_market_research_workloads/**'
+      - 'requirements/stock_market_research_workloads.txt'
     secrets:
       WORKLOAD_IDENTITY_PROVIDER:
         required: true
@@ -19,9 +19,9 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'
-      - 'docker/**'
-      - 'requirements.txt'
+      - 'stock_market_research_workloads/**'
+      - 'docker/stock_market_research_workloads/**'
+      - 'requirements/stock_market_research_workloads.txt'
     secrets:
       WORKLOAD_IDENTITY_PROVIDER:
         required: true
@@ -41,14 +41,16 @@ permissions:
 jobs:
   run-python-tests:
     uses: ./.github/workflows/reusable_run_pytest.yaml
+    with:
+      dependencies_path: 'requirements/stock_market_research_workloads.txt'
 
   lint-dockerfile:
     uses: ./.github/workflows/reusable_lint_dockerfile_workflow.yaml
     needs: run-python-tests
     with:
       context: .
-      file: docker/stock_market_research/Dockerfile
-      image_name: stock_market_research
+      file: docker/stock_market_research_workloads/Dockerfile
+      image_name: stock_market_research_workloads
       environment: terraform-plan
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
@@ -59,8 +61,8 @@ jobs:
     needs: lint-dockerfile
     with:
       context: .
-      file: docker/stock_market_research/Dockerfile
-      image_name: stock_market_research
+      file: docker/stock_market_research_workloads/Dockerfile
+      image_name: stock_market_research_workloads
       environment: terraform-apply
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
@@ -72,7 +74,7 @@ jobs:
     with:
       image_tag: ${{ needs.publish-image.outputs.image_tag }}
       job_project_id: stock-market-research-410417
-      job_group_label: stock_market_research
+      job_group_label: stock_market_research_workloads
       environment: terraform-apply
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'

@@ -1,12 +1,12 @@
 from datetime import date, timedelta
 from sqlalchemy.orm import Session
 
-from src.models.fundamentals import (
+from stock_market_research_workloads.models.fundamentals import (
     CompanyMetaData,
     RetrievedStatementsLog,
     StatementTypeDefinition,
 )
-from src.utils.sql_helpers import get_companies_to_retrieve
+from stock_market_research_workloads.utils.sql_helpers import get_companies_to_retrieve
 
 
 def test_retrieve_different_statement_type(setup_teardown_tables, connection_engine):
