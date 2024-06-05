@@ -89,7 +89,7 @@ jobs:
             print(response)
             
             objects_to_update = []
-            for object in response[object_type_mapping[object_type]]:
+            for object in response["${{ steps.get_cloud_run_api_endpoint.outputs.cloud_run_api_endpoint }}"]:
               if object.get("labels") and object["labels"].get("group") == "${{ inputs.object_group_label }}":
                 objects_to_update.append(object)
             
