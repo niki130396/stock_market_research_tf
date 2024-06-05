@@ -1,0 +1,140 @@
+# This workflow serves for updating images for cloud run jobs as well as cloud run services. The only differentiation
+# between the two is the Google API endpoint we need to hit.
+name: Update Cloud Run Object image tag
+
+on:
+  workflow_call:
+    inputs:
+      image_tag:
+        required: true
+        type: string
+      environment:
+        required: false
+        type: string
+      object_project_id:
+        required: true
+        type: string
+      object_group_label:
+        required: true
+        type: string
+      object_type:
+        required: true
+        type: string
+        description: |
+          There two available object types: job and service
+    secrets:
+      workload_identity_provider:
+        required: true
+      service_account:
+        required: true
+
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+
+jobs:
+  update-cloud-run-object-image-tag:
+    name: Update Cloud Run Object image tag
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - id: authenticate_with_gcp
+        uses: google-github-actions/auth@v0.8.1
+        with:
+          token_format: access_token
+          workload_identity_provider: ${{ secrets.workload_identity_provider }}
+          service_account: ${{ secrets.service_account }}
+          access_token_lifetime: 60s
+
+      - id: setup_python
+        name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - id: install_requests
+        run: |
+          pip install requests
+          pip install aiohttp
+
+      - id: get_cloud_run_api_endpoint
+        with:
+          script: |
+            object_type_mapping = {
+              "service": "services",
+              "job": "jobs",
+            }
+            object_type = "${{ inputs.object_type }}"
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as file:
+              print(f"cloud_run_api_endpoint={object_type_mapping[object_type]}", file=file)
+
+      - id: get_objects_for_update
+        uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            import requests
+            import json
+            
+            headers = {"Authorization": f"Bearer ${{ steps.authenticate_with_gcp.outputs.access_token }}"}
+            
+            response = requests.get(
+              "https://run.googleapis.com/v2/projects/${{ inputs.object_project_id }}/locations/europe-north1/${{ steps.get_cloud_run_api_endpoint.outputs.cloud_run_api_endpoint }}", 
+              headers=headers
+            ).json()
+            
+            print(response)
+            
+            objects_to_update = []
+            for object in response[object_type_mapping[object_type]]:
+              if object.get("labels") and object["labels"].get("group") == "${{ inputs.object_group_label }}":
+                objects_to_update.append(object)
+            
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as file:
+              print(f"objects_to_update={json.dumps(objects_to_update)}", file=file)
+
+      - id: update_object_body
+        uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            import json 
+
+            objects_to_update = list(${{ steps.get_objects_for_update.outputs.objects_to_update }})
+            
+            image_tag = "${{ inputs.image_tag }}"
+            
+            for object in objects_to_update:
+              if "${{ inputs.object_type }}" == "job":
+                container = object["template"]["template"]["containers"][-1]
+              else:
+                container = object["template"]["containers"][-1]
+              container["image"] = image_tag
+              
+            print(objects_to_update)
+            
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as file:
+              print(f"objects_to_update={json.dumps(objects_to_update)}", file=file)
+
+      - id: update_object_image_tags
+        uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            import aiohttp
+            import asyncio
+
+            async def main():
+              async with aiohttp.ClientSession() as session:
+                image_tag = "${{ inputs.image_tag }}"
+
+                objects_to_update = list(${{ steps.update_object_body.outputs.objects_to_update }})
+                headers = {"Authorization": f"Bearer ${{ steps.authenticate_with_gcp.outputs.access_token }}"}
+                for object in objects_to_update:
+                  object_name = object["name"].split("/")[-1]
+                  url = f"https://run.googleapis.com/v2/projects/${{ inputs.object_project_id }}/locations/europe-north1/${{ steps.get_cloud_run_api_endpoint.outputs.cloud_run_api_endpoint }}/{job_name}"
+                  async with session.patch(url, json=job, headers=headers) as response:
+                    operation = await response.json()
+                    print(operation)
+
+            asyncio.run(main())
