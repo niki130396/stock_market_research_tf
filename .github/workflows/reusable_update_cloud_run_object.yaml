@@ -61,6 +61,7 @@ jobs:
           pip install aiohttp
 
       - id: get_cloud_run_api_endpoint
+        uses: jannekem/run-python-script-action@v1
         with:
           script: |
             object_type_mapping = {
