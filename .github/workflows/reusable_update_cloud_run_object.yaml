@@ -105,7 +105,7 @@ jobs:
           script: |
             import json
             
-            objects_to_update = list(json.loads("${{ steps.get_objects_for_update.outputs.objects_to_update }}"))
+            objects_to_update = list(json.loads(${{ steps.get_objects_for_update.outputs.objects_to_update }}))
             
             image_tag = "${{ inputs.image_tag }}"
             
