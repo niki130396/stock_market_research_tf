@@ -61,6 +61,7 @@ jobs:
           pip install aiohttp
 
       - id: get_cloud_run_api_endpoint
+        name: Get Cloud Run API Endpoint
         uses: jannekem/run-python-script-action@v1
         with:
           script: |
@@ -73,6 +74,7 @@ jobs:
               print(f"cloud_run_api_endpoint={object_type_mapping[object_type]}", file=file)
 
       - id: get_objects_for_update
+        name: Get Objects for Update
         uses: jannekem/run-python-script-action@v1
         with:
           script: |
@@ -97,6 +99,7 @@ jobs:
               print(f"objects_to_update={json.dumps(objects_to_update)}", file=file)
 
       - id: update_object_body
+        name: Update Object Body
         uses: jannekem/run-python-script-action@v1
         with:
           script: |
@@ -119,6 +122,7 @@ jobs:
               print(f"objects_to_update={json.dumps(objects_to_update)}", file=file)
 
       - id: update_object_image_tags
+        name: Update Object Image Tags
         uses: jannekem/run-python-script-action@v1
         with:
           script: |
