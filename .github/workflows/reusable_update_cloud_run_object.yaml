@@ -97,6 +97,9 @@ jobs:
             
             with open(os.environ['GITHUB_OUTPUT'], 'a') as file:
               print(f"objects_to_update={json.dumps(objects_to_update)}", file=file)
+            
+            with open(os.environ['GITHUB_ENV'], 'a') as file:
+              print(f"objects_to_update={json.dumps(objects_to_update)}", file=file)
 
       - id: update_object_body
         name: Update Object Body
@@ -105,7 +108,7 @@ jobs:
           script: |
             import json
             
-            objects_to_update = """${{ steps.get_objects_for_update.outputs.objects_to_update }}"""
+            objects_to_update = str(${{ steps.get_objects_for_update.outputs.objects_to_update }})
             print(objects_to_update)
             objects_to_update = list(json.loads(objects_to_update))
             
