@@ -109,10 +109,7 @@ jobs:
             import json
             import os
             
-            print(os.environ["objects_to_update"])
-            objects_to_update = """${{ steps.get_objects_for_update.outputs.objects_to_update }}"""
-            print(objects_to_update)
-            #objects_to_update = list(json.loads(objects_to_update))
+            objects_to_update = json.loads(os.environ["objects_to_update"]
             
             image_tag = "${{ inputs.image_tag }}"
             
