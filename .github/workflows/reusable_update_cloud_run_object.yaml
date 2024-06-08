@@ -140,7 +140,7 @@ jobs:
                 headers = {"Authorization": f"Bearer ${{ steps.authenticate_with_gcp.outputs.access_token }}"}
                 for object in objects_to_update:
                   object_name = object["name"].split("/")[-1]
-                  url = f"https://run.googleapis.com/v2/projects/${{ inputs.object_project_id }}/locations/europe-north1/{os.environ["cloud_run_api_endpoint"]}/{job_name}"
+                  url = f"https://run.googleapis.com/v2/projects/${{ inputs.object_project_id }}/locations/europe-north1/{os.environ['cloud_run_api_endpoint']}/{job_name}"
                   async with session.patch(url, json=job, headers=headers) as response:
                     operation = await response.json()
                     print(operation)
