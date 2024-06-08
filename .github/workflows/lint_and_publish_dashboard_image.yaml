@@ -62,7 +62,7 @@ jobs:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
 
-  update-cloud-run-job:
+  update-cloud-run-service:
     uses: ./.github/workflows/reusable_update_cloud_run_object.yaml
     needs: publish-image
     with:

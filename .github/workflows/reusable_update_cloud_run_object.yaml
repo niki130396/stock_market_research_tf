@@ -1,6 +1,6 @@
 # This workflow serves for updating images for cloud run jobs as well as cloud run services. The only differentiation
 # between the two is the Google API endpoint we need to hit.
-name: Update Cloud Run Object image tag
+name: Update Cloud Run Object Image Tag
 
 on:
   workflow_call:
