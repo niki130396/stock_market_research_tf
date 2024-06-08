@@ -70,7 +70,7 @@ jobs:
               "job": "jobs",
             }
             object_type = "${{ inputs.object_type }}"
-            with open(os.environ['GITHUB_OUTPUT'], 'a') as file:
+            with open(os.environ['GITHUB_ENV'], 'a') as file:
               print(f"cloud_run_api_endpoint={object_type_mapping[object_type]}", file=file)
 
       - id: get_objects_for_update
@@ -80,24 +80,22 @@ jobs:
           script: |
             import requests
             import json
+            import os
             
             headers = {"Authorization": f"Bearer ${{ steps.authenticate_with_gcp.outputs.access_token }}"}
             
             response = requests.get(
-              "https://run.googleapis.com/v2/projects/${{ inputs.object_project_id }}/locations/europe-north1/${{ steps.get_cloud_run_api_endpoint.outputs.cloud_run_api_endpoint }}", 
+              f"https://run.googleapis.com/v2/projects/${{ inputs.object_project_id }}/locations/europe-north1/{os.environ['cloud_run_api_endpoint']}", 
               headers=headers
             ).json()
             
             print(response)
             
             objects_to_update = []
-            for object in response["${{ steps.get_cloud_run_api_endpoint.outputs.cloud_run_api_endpoint }}"]:
+            for object in response[os.environ["cloud_run_api_endpoint"]]:
               if object.get("labels") and object["labels"].get("group") == "${{ inputs.object_group_label }}":
                 objects_to_update.append(object)
-            
-            with open(os.environ['GITHUB_OUTPUT'], 'a') as file:
-              print(f"objects_to_update={json.dumps(objects_to_update)}", file=file)
-            
+
             with open(os.environ['GITHUB_ENV'], 'a') as file:
               print(f"objects_to_update={json.dumps(objects_to_update)}", file=file)
 
@@ -120,9 +118,9 @@ jobs:
                 container = object["template"]["containers"][-1]
               container["image"] = image_tag
               
-            #print(objects_to_update)
+            print(objects_to_update)
             
-            with open(os.environ['GITHUB_OUTPUT'], 'a') as file:
+            with open(os.environ['GITHUB_ENV'], 'a') as file:
               print(f"objects_to_update={json.dumps(objects_to_update)}", file=file)
 
       - id: update_object_image_tags
@@ -132,16 +130,17 @@ jobs:
           script: |
             import aiohttp
             import asyncio
-
+            import os
+            
             async def main():
               async with aiohttp.ClientSession() as session:
                 image_tag = "${{ inputs.image_tag }}"
 
-                objects_to_update = list(${{ steps.update_object_body.outputs.objects_to_update }})
+                objects_to_update = json.loads(os.environ["objects_to_update"])
                 headers = {"Authorization": f"Bearer ${{ steps.authenticate_with_gcp.outputs.access_token }}"}
                 for object in objects_to_update:
                   object_name = object["name"].split("/")[-1]
-                  url = f"https://run.googleapis.com/v2/projects/${{ inputs.object_project_id }}/locations/europe-north1/${{ steps.get_cloud_run_api_endpoint.outputs.cloud_run_api_endpoint }}/{job_name}"
+                  url = f"https://run.googleapis.com/v2/projects/${{ inputs.object_project_id }}/locations/europe-north1/{os.environ["cloud_run_api_endpoint"]}/{job_name}"
                   async with session.patch(url, json=job, headers=headers) as response:
                     operation = await response.json()
                     print(operation)
