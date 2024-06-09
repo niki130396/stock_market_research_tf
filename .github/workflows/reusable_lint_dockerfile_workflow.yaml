@@ -67,6 +67,16 @@ jobs:
           username: oauth2accesstoken
           password: ${{ steps.authenticate_with_gcp.outputs.access_token }}
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}
+          flavor: |
+            latest=true
+          tags: |
+            type=raw,value=${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
+
       - name: set_up_qemu
         uses: docker/setup-qemu-action@v3
 
@@ -82,7 +92,13 @@ jobs:
           file: ${{ inputs.file }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          push: false
+          load: true
           platforms: linux/amd64,linux/arm64
           secrets: |
             ${{ secrets.docker_secrets }}
+          tags: |
+             ${{ steps.meta.outputs.tags }}
+
+      - id: test_container
+        run: |
+          docker run --rm ${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}

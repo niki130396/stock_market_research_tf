@@ -5,6 +5,7 @@ COPY requirements/stock_market_research_dashboard.txt requirements.txt
 RUN pip install -r requirements.txt
 
 COPY stock_market_research_dashboard stock_market_research_dashboard
+COPY utils stock_market_research_dashboard/utils
 
 ENV PYTHONPATH "${PYTHONPATH}:/stock_market_research_dashboard"
 
