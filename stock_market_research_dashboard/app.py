@@ -7,6 +7,37 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
 
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    mapped_column,
+    relationship,
+    Mapped,
+    Session,
+)
+
+from utils.models import CompanyMetaData
+from utils.sql_helpers import connect_to_cloud_sql
+
+with Session(connect_to_cloud_sql()) as session:
+    companies = session.query(
+        CompanyMetaData.symbol,
+        CompanyMetaData.name,
+        CompanyMetaData.sector,
+        CompanyMetaData.industry,
+        CompanyMetaData.market_cap,
+        CompanyMetaData.full_time_employees_count,
+    ).all()
+
+
+companies_df = pd.DataFrame(companies, columns=[
+    "symbol",
+    "name",
+    "sector",
+    "industry",
+    "market_cap",
+    "full_time_employees_count"
+])
+
 # Sample DataFrame
 df = pd.DataFrame({
     'x': [1, 2, 3, 4, 5],
@@ -14,8 +45,9 @@ df = pd.DataFrame({
     'category': ['A', 'B', 'A', 'B', 'A']
 })
 
+top_10_companies_by_market_cap = companies_df.sort_values(by="market_cap", ascending=False)[:10][["name", "market_cap"]]
 # Create a Plotly Express scatter plot
-fig = px.scatter(df, x='x', y='y', color='category')
+companies_by_market_cap_fig = px.bar(top_10_companies_by_market_cap, x='name', y='market_cap')
 
 EXTERNAL_STYLESHEETS = [
     "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -145,23 +177,23 @@ sidebar = html.Nav(className="sidebar", children=[
 
 
 main_content = html.Div(className="main_content", children=[
-    html.H1("Simple Scatter Plot"),
+    html.H1("Top 10 Companies by Market Cap"),
     dcc.Graph(
         id='scatter-plot',
-        figure=fig
+        figure=companies_by_market_cap_fig
     ),
-    html.Label("Select X-axis:"),
-    dcc.Dropdown(
-        id='x-axis-dropdown',
-        options=[{'label': col, 'value': col} for col in df.columns if col != 'y'],
-        value='x'
-    ),
-    html.Label("Select Y-axis:"),
-    dcc.Dropdown(
-        id='y-axis-dropdown',
-        options=[{'label': col, 'value': col} for col in df.columns if col != 'x'],
-        value='y'
-    )
+    # html.Label("Select X-axis:"),
+    # dcc.Dropdown(
+    #     id='x-axis-dropdown',
+    #     options=[{'label': col, 'value': col} for col in df.columns if col != 'y'],
+    #     value='x'
+    # ),
+    # html.Label("Select Y-axis:"),
+    # dcc.Dropdown(
+    #     id='y-axis-dropdown',
+    #     options=[{'label': col, 'value': col} for col in df.columns if col != 'x'],
+    #     value='y'
+    # )
 ])
 
 app.layout = html.Div(className="container", children=[
@@ -171,14 +203,14 @@ app.layout = html.Div(className="container", children=[
 ])
 
 
-@app.callback(
-    Output('scatter-plot', 'figure'),
-    Input('x-axis-dropdown', 'value'),
-    Input('y-axis-dropdown', 'value')
-)
-def update_graph(x_axis, y_axis):
-    fig = px.scatter(df, x=x_axis, y=y_axis, color='category')
-    return fig
+# @app.callback(
+#     Output('scatter-plot', 'figure'),
+#     Input('x-axis-dropdown', 'value'),
+#     Input('y-axis-dropdown', 'value')
+# )
+# def update_graph(x_axis, y_axis):
+#     fig = px.scatter(df, x=x_axis, y=y_axis, color='category')
+#     return fig
 
 
 # Run the app
