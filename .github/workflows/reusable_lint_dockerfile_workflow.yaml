@@ -17,6 +17,14 @@ on:
       environment:
         required: false
         type: string
+      docker_env_vars:
+        required: false
+        description: |
+          This is how you should populate this attribute when calling the workflow: 
+          with:
+            docker_env_vars: |
+              "VAR_ONE=VALUE_ONE"
+              "VAR_TWO=VALUE_TWO"
     secrets:
       docker_secrets:
         required: false
@@ -98,4 +106,7 @@ jobs:
 
       - id: test_container
         run: |
+          if [ -z "${{ inputs.docker_env_vars }}"]; then
+            echo "${{ inputs.docker_env_vars }}"
+          
           docker run --rm europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
