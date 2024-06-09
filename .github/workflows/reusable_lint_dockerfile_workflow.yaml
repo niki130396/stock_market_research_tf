@@ -17,15 +17,6 @@ on:
       environment:
         required: false
         type: string
-      docker_env_vars:
-        required: false
-        type: string
-        description: |
-          This is how you should populate this attribute when calling the workflow: 
-          with:
-            docker_env_vars: |
-              "VAR_ONE=VALUE_ONE"
-              "VAR_TWO=VALUE_TWO"
     secrets:
       docker_secrets:
         required: false
@@ -35,6 +26,14 @@ on:
             docker_secrets: |
               "SECRET_ONE=VALUE_ONE"
               "SECRET_TWO=VALUE_TWO"
+      docker_env_vars:
+        required: false
+        description: |
+          This is how you should populate this attribute when calling the workflow: 
+          secrets:
+            docker_env_vars: |
+              "VAR_ONE=VALUE_ONE"
+              "VAR_TWO=VALUE_TWO"
       workload_identity_provider:
         required: true
       service_account:
@@ -124,4 +123,4 @@ jobs:
         run: |
           cat .env
 
-          docker run --rm europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
+          docker run --rm --env-file .env europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}

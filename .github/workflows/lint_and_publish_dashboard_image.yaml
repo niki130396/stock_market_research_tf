@@ -52,6 +52,10 @@ jobs:
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+      docker_env_vars: |
+        STOCK_MARKET_RESEARCH_DB_HOST=${{ secrets.STOCK_MARKET_RESEARCH_DB_HOST }}
+        STOCK_MARKET_RESEARCH_DB_USERNAME=${{ secrets.STOCK_MARKET_RESEARCH_DB_USERNAME }}
+        STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}
 
   publish-image:
     uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
