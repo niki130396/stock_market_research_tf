@@ -46,6 +46,9 @@ jobs:
       file: docker/stock_market_research_dashboard/Dockerfile
       image_name: stock_market_research_dashboard
       environment: terraform-plan
+      docker_env_vars: |
+        "VAR_ONE=VALUE_ONE"
+        "VAR_TWO=VALUE_TWO"
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
@@ -71,9 +74,6 @@ jobs:
       object_group_label: stock_market_research_dashboard
       object_type: service
       environment: terraform-apply
-      docker_env_vars: |
-        "VAR_ONE=VALUE_ONE"
-        "VAR_TWO=VALUE_TWO"
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
