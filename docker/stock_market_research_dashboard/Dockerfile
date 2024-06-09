@@ -1,7 +1,5 @@
 FROM python:3.12-slim-bullseye
 
-USER root
-
 RUN apt-get update && apt-get install -y \
     curl
 
@@ -16,8 +14,6 @@ RUN --mount=type=secret,id=STOCK_MARKET_RESEARCH_USER_SA_KEY \
     && echo "$(cat /run/secrets/STOCK_MARKET_RESEARCH_USER_SA_KEY)" | base64 -d >> ./google/service_account.json
 
 ENV GOOGLE_APPLICATION_CREDENTIALS="./google/service_account.json"
-
-USER nonroot
 
 COPY requirements/stock_market_research_dashboard.txt requirements.txt
 
