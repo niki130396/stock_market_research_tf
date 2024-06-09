@@ -1,0 +1,14 @@
+
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: ./docker/stock_market_research_dashboard/Dockerfile
+    image: stock_market_research_dashboard
+    container_name: stock_market_research_dashboard
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.stock_market_research_dashboard
+    ports:
+      - '8050:8050'

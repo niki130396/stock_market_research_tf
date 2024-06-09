@@ -119,8 +119,8 @@ jobs:
             with open(".env", "w") as file:
               file.write(vars)
 
-#      - id: test_container
-#        run: |
-#          cat .env
-#
-#          docker run --rm --env-file .env europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
+      - id: test_container
+        run: |
+          cat .env
+
+          docker run --rm --env-file .env europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
