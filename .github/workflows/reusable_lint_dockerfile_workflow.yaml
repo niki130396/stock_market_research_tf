@@ -115,6 +115,7 @@ jobs:
         uses: jannekem/run-python-script-action@v1
         with:
           script: |
+            print("${{ secrets.docker_secrets }}")
             vars = """${{ secrets.docker_env_vars }}"""
             with open(".env", "w") as file:
               file.write(vars)

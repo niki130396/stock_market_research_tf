@@ -19,6 +19,8 @@ on:
         required: true
       STOCK_MARKET_RESEARCH_USER_SA_KEY:
         required: true
+      RANDOM_SECRET:
+        required: true
   push:
     branches:
       - main
@@ -38,6 +40,8 @@ on:
       STOCK_MARKET_RESEARCH_DB_USERNAME:
         required: true
       STOCK_MARKET_RESEARCH_USER_SA_KEY:
+        required: true
+      RANDOM_SECRET:
         required: true
 
 permissions:
@@ -62,7 +66,7 @@ jobs:
         STOCK_MARKET_RESEARCH_DB_USERNAME=${{ secrets.STOCK_MARKET_RESEARCH_DB_USERNAME }}
         STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}
       docker_secrets: |
-        "STOCK_MARKET_RESEARCH_USER_SA_KEY=${{ secrets.STOCK_MARKET_RESEARCH_USER_SA_KEY }}"
+        "RANDOM_SECRET=${{ secrets.RANDOM_SECRET }}"
 
   publish-image:
     uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
