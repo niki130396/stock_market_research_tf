@@ -108,6 +108,7 @@ jobs:
       - id: test_container
         run: |
           if [ -z "${{ inputs.docker_env_vars }}" ]; then
+            echo "${{ inputs.docker_env_vars }}"
             while IFS= read -r line; do
               echo "$line" >> env_vars.env
             done <<< "${{ inputs.docker_env_vars }}"
