@@ -2,8 +2,7 @@ FROM python:3.12-slim-bullseye
 
 USER root
 
-RUN apk upgrade --no-cache && \
-    apk add \
+RUN apt-get update && apt-get install -y \
     curl
 
 # Install google cloud sdk
