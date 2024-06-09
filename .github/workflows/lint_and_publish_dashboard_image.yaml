@@ -13,7 +13,11 @@ on:
         required: true
       STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
         required: true
-      SOME_SECRET:
+      STOCK_MARKET_RESEARCH_DB_HOST:
+        required: true
+      STOCK_MARKET_RESEARCH_DB_USERNAME:
+        required: true
+      STOCK_MARKET_RESEARCH_USER_SA_KEY:
         required: true
   push:
     branches:
@@ -29,7 +33,11 @@ on:
         required: true
       STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
         required: true
-      SOME_SECRET:
+      STOCK_MARKET_RESEARCH_DB_HOST:
+        required: true
+      STOCK_MARKET_RESEARCH_DB_USERNAME:
+        required: true
+      STOCK_MARKET_RESEARCH_USER_SA_KEY:
         required: true
 
 permissions:
