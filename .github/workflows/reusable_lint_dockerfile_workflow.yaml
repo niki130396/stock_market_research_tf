@@ -105,15 +105,29 @@ jobs:
           tags: |
              ${{ steps.meta.outputs.tags }}
 
-      - id: test_container
-        run: |
-          if [ -z "${{ inputs.docker_env_vars }}" ]; then
-            echo "${{ inputs.docker_env_vars }}"
-            while IFS= read -r line; do
-              echo "$line" >> env_vars.env
-            done <<< "${{ inputs.docker_env_vars }}"
-          fi
-          
-          cat env_vars.env
-          
-          docker run --rm europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
+      - id: setup_python
+        name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - id: create_env_vars_file
+        name: Create Environment Variables File
+        uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            vars = """${{ inputs.docker_env_vars }}"""
+            print(vars)
+
+#      - id: test_container
+#        run: |
+#          if [ -z "${{ inputs.docker_env_vars }}" ]; then
+#            echo "${{ inputs.docker_env_vars }}"
+#            while IFS= read -r line; do
+#              echo "$line" >> env_vars.env
+#            done <<< "${{ inputs.docker_env_vars }}"
+#          fi
+#
+#          cat env_vars.env
+#
+#          docker run --rm europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}

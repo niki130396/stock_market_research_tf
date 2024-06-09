@@ -47,8 +47,8 @@ jobs:
       image_name: stock_market_research_dashboard
       environment: terraform-plan
       docker_env_vars: |
-        "VAR_ONE=VALUE_ONE"
-        "VAR_TWO=VALUE_TWO"
+        VAR_ONE=VALUE_ONE
+        VAR_TWO=VALUE_TWO
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
