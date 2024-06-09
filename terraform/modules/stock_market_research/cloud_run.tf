@@ -65,11 +65,37 @@ resource "google_cloud_run_v2_service" "stock_market_research_dashboard" {
   labels = local.stock_market_research_dashboard_labels
 
   template {
+
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.stock_market_research_db.connection_name]
+      }
+    }
+
     containers {
       ports {
         container_port = 8050
       }
-      image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:latest"
+      image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:fundamentals_tables-1.0.61"
+
+      env {
+        name  = "STOCK_MARKET_RESEARCH_DB_USER_PASSWORD"
+        value = var.stock_market_research_db_user_password
+      }
+      env {
+        name = "STOCK_MARKET_RESEARCH_DB_USERNAME"
+        value = google_sql_user.stock_market_research_db_user.name
+      }
+      env {
+        name = "STOCK_MARKET_RESEARCH_DB_HOST"
+        value = google_sql_database_instance.stock_market_research_db.connection_name
+      }
+      volume_mounts {
+        name = "cloudsql"
+        mount_path = "/cloudsql"
+      }
+
       startup_probe {
         initial_delay_seconds = 0
         timeout_seconds = 1
