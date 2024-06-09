@@ -107,8 +107,12 @@ jobs:
 
       - id: test_container
         run: |
-          if [ -z "${{ inputs.docker_env_vars }}"]; then
-            echo "${{ inputs.docker_env_vars }}"
+          if [ -z "${{ inputs.docker_env_vars }}" ]; then
+            while IFS= read -r line; do
+              echo "$line" >> env_vars.env
+            done <<< "${{ inputs.docker_env_vars }}"
           fi
+          
+          cat env_vars.env
           
           docker run --rm europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
