@@ -98,4 +98,4 @@ jobs:
 
       - id: test_container
         run: |
-          docker run --rm ${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
+          docker run --rm europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
