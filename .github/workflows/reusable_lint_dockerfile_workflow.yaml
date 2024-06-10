@@ -34,8 +34,6 @@ on:
             docker_env_vars: |
               "VAR_ONE=VALUE_ONE"
               "VAR_TWO=VALUE_TWO"
-      STOCK_MARKET_RESEARCH_USER_SA_KEY:
-        required: false
       workload_identity_provider:
         required: true
       service_account:
@@ -103,7 +101,6 @@ jobs:
           load: true
           secrets: |
             ${{ secrets.docker_secrets }}
-            "STOCK_MARKET_RESEARCH_USER_SA_KEY=${{ secrets.STOCK_MARKET_RESEARCH_USER_SA_KEY }}"
           tags: |
              ${{ steps.meta.outputs.tags }}
 
