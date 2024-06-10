@@ -26,6 +26,8 @@ on:
             docker_secrets: |
               "SECRET_ONE=VALUE_ONE"
               "SECRET_TWO=VALUE_TWO"
+      STOCK_MARKET_RESEARCH_USER_SA_KEY:
+        required: false
       workload_identity_provider:
         required: true
       service_account:
