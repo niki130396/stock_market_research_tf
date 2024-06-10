@@ -67,6 +67,7 @@ jobs:
         STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}
       docker_secrets: |
         "RANDOM_SECRET=${{ secrets.RANDOM_SECRET }}"
+        "STOCK_MARKET_RESEARCH_USER_SA_KEY=${{ secrets.STOCK_MARKET_RESEARCH_USER_SA_KEY }}"
 
   publish-image:
     uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
