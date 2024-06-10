@@ -104,24 +104,24 @@ jobs:
           tags: |
              ${{ steps.meta.outputs.tags }}
 
-      - id: setup_python
-        name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - id: create_env_vars_file
-        name: Create Environment Variables File
-        uses: jannekem/run-python-script-action@v1
-        with:
-          script: |
-            print("""${{ secrets.docker_secrets }}""")
-            vars = """${{ secrets.docker_env_vars }}"""
-            with open(".env", "w") as file:
-              file.write(vars)
-
-      - id: test_container
-        run: |
-          cat .env
-
-          docker run --rm --env-file .env europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
+#      - id: setup_python
+#        name: Setup Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.10'
+#
+#      - id: create_env_vars_file
+#        name: Create Environment Variables File
+#        uses: jannekem/run-python-script-action@v1
+#        with:
+#          script: |
+#            print("""${{ secrets.docker_secrets }}""")
+#            vars = """${{ secrets.docker_env_vars }}"""
+#            with open(".env", "w") as file:
+#              file.write(vars)
+#
+#      - id: test_container
+#        run: |
+#          cat .env
+#
+#          docker run --rm --env-file .env europe-north1-docker.pkg.dev/stock-market-research-410417/docker/${{ inputs.image_name }}:${{ steps.extract_branch.outputs.branch }}-1.0.${{ github.run_number }}
