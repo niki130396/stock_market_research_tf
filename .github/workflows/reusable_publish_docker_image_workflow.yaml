@@ -102,6 +102,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           secrets: |
             ${{ secrets.docker_secrets }}
+            "STOCK_MARKET_RESEARCH_USER_SA_KEY=${{ secrets.STOCK_MARKET_RESEARCH_USER_SA_KEY }}"
           tags: |
              ${{ steps.meta.outputs.tags }}
 
