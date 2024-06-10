@@ -82,8 +82,6 @@ jobs:
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
       docker_secrets: |
         "STOCK_MARKET_RESEARCH_USER_SA_KEY=${{ secrets.STOCK_MARKET_RESEARCH_USER_SA_KEY }}"
-      STOCK_MARKET_RESEARCH_USER_SA_KEY: '${{ secrets.STOCK_MARKET_RESEARCH_USER_SA_KEY }}'
-
 
   update-cloud-run-service:
     uses: ./.github/workflows/reusable_update_cloud_run_object.yaml
