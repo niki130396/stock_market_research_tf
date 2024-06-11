@@ -17,6 +17,18 @@ server = app.server
 
 df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv')
 
+df_sorted = df.sort_values(by=['country', 'year'])
+
+
+# Step 2: Group by country and calculate the population difference
+def population_diff(group):
+    return group.iloc[-1]['pop'] - group.iloc[0]['pop']
+
+
+population_diff_df = df_sorted.groupby('country').apply(population_diff).reset_index(name='population_difference')
+population_diff_df_sorted = population_diff_df.sort_values(by='population_difference', ascending=False)
+population_of_country_difference_fig = px.bar(population_diff_df_sorted, x='country', y='population_difference')
+
 sidebar = html.Nav(className="sidebar", children=[
     html.Div(className="menu_content", children=[
         html.Ul(className="menu_items", children=[
@@ -142,9 +154,17 @@ main_content = html.Div(className="main_content", children=[
     dcc.Graph(id='graph-content')
 ])
 
+population_diff_div = html.Div(
+    className="population_diff", children=[
+        html.H1(children="Population Difference by Country From Last Year to First Year", style={'textAlign': 'center'}),
+        dcc.Graph(id="population_difference_graph", figure=population_of_country_difference_fig)
+    ]
+)
+
 app.layout = html.Div(className="container", children=[
     sidebar,
     main_content,
+    population_diff_div,
     html.Script(src="./assets/sidebar_script.js")
 ])
 
