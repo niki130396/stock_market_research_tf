@@ -11,7 +11,7 @@ ENV PATH="./google-cloud-sdk/bin:$PATH"
 
 RUN --mount=type=secret,id=STOCK_MARKET_RESEARCH_USER_SA_KEY \
     mkdir ./google \
-    && echo "$(cat /run/secrets/STOCK_MARKET_RESEARCH_USER_SA_KEY)" | base64 -d >> ./google/service_account.json
+    && echo "$(cat /run/secrets/STOCK_MARKET_RESEARCH_USER_SA_KEY)" >> ./google/service_account.json
 
 ENV GOOGLE_APPLICATION_CREDENTIALS="/google/service_account.json"
 
