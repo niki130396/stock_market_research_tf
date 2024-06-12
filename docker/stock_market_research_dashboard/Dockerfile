@@ -13,7 +13,7 @@ RUN --mount=type=secret,id=STOCK_MARKET_RESEARCH_USER_SA_KEY \
     mkdir ./google \
     && echo "$(cat /run/secrets/STOCK_MARKET_RESEARCH_USER_SA_KEY)" >> ./google/service_account.json
 
-ENV GOOGLE_APPLICATION_CREDENTIALS="./google/service_account.json"
+ENV GOOGLE_APPLICATION_CREDENTIALS="/google/service_account.json"
 
 COPY requirements/stock_market_research_dashboard.txt requirements.txt
 

@@ -36,3 +36,4 @@ terraform.rc
 .secrets
 venv
 .envs
+stock_market_research_dashboard.yaml
