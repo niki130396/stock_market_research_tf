@@ -10,7 +10,7 @@ EXTERNAL_STYLESHEETS = [
     "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
 ]
 # Initialize the Dash app
-app = dash.Dash(__name__, external_stylesheets=EXTERNAL_STYLESHEETS)
+app = dash.Dash(__name__, external_stylesheets=EXTERNAL_STYLESHEETS, use_pages=True)
 
 server = app.server
 
