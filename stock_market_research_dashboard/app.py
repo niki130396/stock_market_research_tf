@@ -20,14 +20,22 @@ df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapmi
 df_sorted = df.sort_values(by=['country', 'year'])
 
 
-# Step 2: Group by country and calculate the population difference
-def population_diff(group):
-    return group.iloc[-1]['pop'] - group.iloc[0]['pop']
+def population_stats(group):
+    max_pop = group['pop'].max()
+    last_pop = group.iloc[-1]['pop']
+    pop_diff = last_pop - max_pop
+    pop_diff_percentage = (pop_diff / max_pop) * 100
+    return pd.Series({'max_population': max_pop, 'last_population': last_pop,
+                      'population_difference': pop_diff, 'population_difference_percentage': pop_diff_percentage})
 
 
-population_diff_df = df_sorted.groupby('country').apply(population_diff).reset_index(name='population_difference')
-population_diff_df_sorted = population_diff_df.sort_values(by='population_difference', ascending=False)
-population_of_country_difference_fig = px.bar(population_diff_df_sorted, x='country', y='population_difference')
+population_stats_df = df_sorted.groupby('country').apply(population_stats).reset_index()
+
+declining_population_df = population_stats_df[population_stats_df['population_difference'] < 0]
+
+declining_population_df_sorted = declining_population_df.sort_values(by='population_difference_percentage')
+
+population_of_country_difference_fig = px.bar(declining_population_df_sorted, x='country', y='population_difference_percentage')
 
 sidebar = html.Nav(className="sidebar", children=[
     html.Div(className="menu_content", children=[
@@ -147,24 +155,28 @@ sidebar = html.Nav(className="sidebar", children=[
     ])
 ])
 
-
-main_content = html.Div(className="main_content", children=[
+graph_1 = html.Div(className="graph_1", children=[
     html.H1(children='Title of Dash App', style={'textAlign': 'center'}),
     dcc.Dropdown(df.country.unique(), 'Canada', id='dropdown-selection'),
     dcc.Graph(id='graph-content')
 ])
 
-population_diff_div = html.Div(
-    className="population_diff", children=[
+graph_2 = html.Div(
+    className="graph_2", children=[
         html.H1(children="Population Difference by Country From Last Year to First Year", style={'textAlign': 'center'}),
         dcc.Graph(id="population_difference_graph", figure=population_of_country_difference_fig)
     ]
 )
 
+main_content = html.Div(className="main_content", children=[
+    graph_1,
+    graph_2
+])
+
+
 app.layout = html.Div(className="container", children=[
     sidebar,
     main_content,
-    population_diff_div,
     html.Script(src="./assets/sidebar_script.js")
 ])
 
