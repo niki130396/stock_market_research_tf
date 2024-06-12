@@ -177,6 +177,7 @@ main_content = html.Div(className="main_content", children=[
 app.layout = html.Div(className="container", children=[
     sidebar,
     main_content,
+    dash.page_container,
     html.Script(src="./assets/sidebar_script.js")
 ])
 
