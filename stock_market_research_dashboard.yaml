@@ -1,10 +1,7 @@
 
 services:
   dashboard:
-    build:
-      context: .
-      dockerfile: ./docker/stock_market_research_dashboard/Dockerfile
-    image: stock_market_research_dashboard
+    image: europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:fundamentals_tables-1.0.82
     container_name: stock_market_research_dashboard
     volumes:
       - .:/app:z
