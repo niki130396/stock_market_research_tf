@@ -13,7 +13,13 @@ on:
         required: true
       STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
         required: true
-      SOME_SECRET:
+      STOCK_MARKET_RESEARCH_DB_HOST:
+        required: true
+      STOCK_MARKET_RESEARCH_DB_USERNAME:
+        required: true
+      STOCK_MARKET_RESEARCH_USER_SA_KEY:
+        required: true
+      RANDOM_SECRET:
         required: true
   push:
     branches:
@@ -29,7 +35,13 @@ on:
         required: true
       STOCK_MARKET_RESEARCH_DB_USER_PASSWORD:
         required: true
-      SOME_SECRET:
+      STOCK_MARKET_RESEARCH_DB_HOST:
+        required: true
+      STOCK_MARKET_RESEARCH_DB_USERNAME:
+        required: true
+      STOCK_MARKET_RESEARCH_USER_SA_KEY:
+        required: true
+      RANDOM_SECRET:
         required: true
 
 permissions:
@@ -49,6 +61,13 @@ jobs:
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+      docker_env_vars: |
+        STOCK_MARKET_RESEARCH_DB_HOST=${{ secrets.STOCK_MARKET_RESEARCH_DB_HOST }}
+        STOCK_MARKET_RESEARCH_DB_USERNAME=${{ secrets.STOCK_MARKET_RESEARCH_DB_USERNAME }}
+        STOCK_MARKET_RESEARCH_DB_USER_PASSWORD=${{ secrets.STOCK_MARKET_RESEARCH_DB_USER_PASSWORD }}
+      docker_secrets: |
+        "RANDOM_SECRET=${{ secrets.RANDOM_SECRET }}"
+        "STOCK_MARKET_RESEARCH_USER_SA_KEY=${{ secrets.STOCK_MARKET_RESEARCH_USER_SA_KEY }}"
 
   publish-image:
     uses: ./.github/workflows/reusable_publish_docker_image_workflow.yaml
@@ -61,14 +80,17 @@ jobs:
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'
       workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+      docker_secrets: |
+        "STOCK_MARKET_RESEARCH_USER_SA_KEY=${{ secrets.STOCK_MARKET_RESEARCH_USER_SA_KEY }}"
 
-  update-cloud-run-job:
-    uses: ./.github/workflows/reusable_update_cloud_run_job.yaml
+  update-cloud-run-service:
+    uses: ./.github/workflows/reusable_update_cloud_run_object.yaml
     needs: publish-image
     with:
       image_tag: ${{ needs.publish-image.outputs.image_tag }}
-      job_project_id: stock-market-research-410417
-      job_group_label: stock_market_research_dashboard
+      object_project_id: stock-market-research-410417
+      object_group_label: stock_market_research_dashboard
+      object_type: service
       environment: terraform-apply
     secrets:
       service_account: '${{ secrets.TERRAFORM_SERVICE_ACCOUNT }}'

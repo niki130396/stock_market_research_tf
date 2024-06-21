@@ -1,41 +1,48 @@
-import os
-
 import dash
-from dash import dcc, html, callback, Output, Input
+from dash import dcc, html
 import plotly.express as px
 import pandas as pd
 
+from sqlalchemy.orm import (
+    Session,
+)
 
-EXTERNAL_STYLESHEETS = [
-    "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-]
-# Initialize the Dash app
-app = dash.Dash(__name__, external_stylesheets=EXTERNAL_STYLESHEETS, use_pages=True)
-
-server = app.server
+from utils.models import CompanyMetaData
+from utils.sql_helpers import connect_to_cloud_sql
 
 
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv')
+dash.register_page(__name__)
 
-df_sorted = df.sort_values(by=['country', 'year'])
+with Session(connect_to_cloud_sql()) as session:
+    companies = session.query(
+        CompanyMetaData.symbol,
+        CompanyMetaData.name,
+        CompanyMetaData.sector,
+        CompanyMetaData.industry,
+        CompanyMetaData.market_cap,
+        CompanyMetaData.full_time_employees_count,
+    ).all()
 
 
-def population_stats(group):
-    max_pop = group['pop'].max()
-    last_pop = group.iloc[-1]['pop']
-    pop_diff = last_pop - max_pop
-    pop_diff_percentage = (pop_diff / max_pop) * 100
-    return pd.Series({'max_population': max_pop, 'last_population': last_pop,
-                      'population_difference': pop_diff, 'population_difference_percentage': pop_diff_percentage})
+companies_df = pd.DataFrame(companies, columns=[
+    "symbol",
+    "name",
+    "sector",
+    "industry",
+    "market_cap",
+    "full_time_employees_count"
+])
 
+# Sample DataFrame
+df = pd.DataFrame({
+    'x': [1, 2, 3, 4, 5],
+    'y': [10, 20, 30, 40, 50],
+    'category': ['A', 'B', 'A', 'B', 'A']
+})
 
-population_stats_df = df_sorted.groupby('country').apply(population_stats).reset_index()
-
-declining_population_df = population_stats_df[population_stats_df['population_difference'] < 0]
-
-declining_population_df_sorted = declining_population_df.sort_values(by='population_difference_percentage')
-
-population_of_country_difference_fig = px.bar(declining_population_df_sorted, x='country', y='population_difference_percentage')
+top_10_companies_by_market_cap = companies_df.sort_values(by="market_cap", ascending=False)[:10][["name", "market_cap"]]
+# Create a Plotly Express scatter plot
+companies_by_market_cap_fig = px.bar(top_10_companies_by_market_cap, x='name', y='market_cap')
 
 sidebar = html.Nav(className="sidebar", children=[
     html.Div(className="menu_content", children=[
@@ -155,42 +162,17 @@ sidebar = html.Nav(className="sidebar", children=[
     ])
 ])
 
-graph_1 = html.Div(className="graph_1", children=[
-    html.H1(children='Title of Dash App', style={'textAlign': 'center'}),
-    dcc.Dropdown(df.country.unique(), 'Canada', id='dropdown-selection'),
-    dcc.Graph(id='graph-content')
-])
-
-graph_2 = html.Div(
-    className="graph_2", children=[
-        html.H1(children="Population Difference by Country From Last Year to First Year", style={'textAlign': 'center'}),
-        dcc.Graph(id="population_difference_graph", figure=population_of_country_difference_fig)
-    ]
-)
 
 main_content = html.Div(className="main_content", children=[
-    graph_1,
-    graph_2
+    html.H1("Top 10 Companies by Market Cap"),
+    dcc.Graph(
+        id='scatter-plot',
+        figure=companies_by_market_cap_fig
+    ),
 ])
 
-
-app.layout = html.Div(className="container", children=[
+layout = html.Div(className="container", children=[
     sidebar,
     main_content,
-    dash.page_container,
     html.Script(src="./assets/sidebar_script.js")
 ])
-
-
-@callback(
-    Output('graph-content', 'figure'),
-    Input('dropdown-selection', 'value')
-)
-def update_graph(value):
-    dff = df[df.country==value]
-    return px.line(dff, x='year', y='pop')
-
-
-# Run the app
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8050)))

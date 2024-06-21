@@ -1,0 +1,11 @@
+
+services:
+  dashboard:
+    image: europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:fundamentals_tables-1.0.82
+    container_name: stock_market_research_dashboard
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.stock_market_research_dashboard
+    ports:
+      - '8050:8050'
