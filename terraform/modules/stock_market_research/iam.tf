@@ -56,3 +56,12 @@ resource "google_project_iam_member" "cloud_run_job_invoker" {
 #   service = google_cloud_run_v2_service.stock_market_research_dashboard.name
 #   location = var.gcp_region
 # }
+
+
+resource "google_project_iam_member" "owner_role" {
+  member  = "serviceAccount:${google_service_account.secondary_terraform.email}"
+  project = var.gcp_project_full
+  role    = "roles/owner"
+
+  depends_on = [google_service_account.secondary_terraform]
+}
