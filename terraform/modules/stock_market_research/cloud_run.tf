@@ -55,38 +55,38 @@ resource "google_cloud_run_v2_job" "get_company_details" {
 
   depends_on = [google_project_service.enabled_apis, google_artifact_registry_repository_iam_member.docker_writer]
 }
-
-
-resource "google_cloud_run_v2_service" "stock_market_research_dashboard" {
-  name = "stock-market-research-dashboard"
-  location = var.gcp_region
-  ingress = "INGRESS_TRAFFIC_ALL"
-
-  labels = local.stock_market_research_dashboard_labels
-
-  template {
-    containers {
-      ports {
-        container_port = 8050
-      }
-      image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:fundamentals_tables-1.0.22"
-      startup_probe {
-        initial_delay_seconds = 0
-        timeout_seconds = 1
-        period_seconds = 3
-        failure_threshold = 1
-        tcp_socket {
-          port = 8050
-        }
-      }
-      liveness_probe {
-        http_get {
-          path = "/"
-          port = 8050
-        }
-      }
-
-    }
-    service_account = google_service_account.stock_market_research_user.email
-  }
-}
+#
+#
+# resource "google_cloud_run_v2_service" "stock_market_research_dashboard" {
+#   name = "stock-market-research-dashboard"
+#   location = var.gcp_region
+#   ingress = "INGRESS_TRAFFIC_ALL"
+#
+#   labels = local.stock_market_research_dashboard_labels
+#
+#   template {
+#     containers {
+#       ports {
+#         container_port = 8050
+#       }
+#       image = "europe-north1-docker.pkg.dev/stock-market-research-410417/docker/stock_market_research_dashboard:fundamentals_tables-1.0.22"
+#       startup_probe {
+#         initial_delay_seconds = 0
+#         timeout_seconds = 1
+#         period_seconds = 3
+#         failure_threshold = 1
+#         tcp_socket {
+#           port = 8050
+#         }
+#       }
+#       liveness_probe {
+#         http_get {
+#           path = "/"
+#           port = 8050
+#         }
+#       }
+#
+#     }
+#     service_account = google_service_account.stock_market_research_user.email
+#   }
+# }
